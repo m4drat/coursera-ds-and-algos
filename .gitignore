@@ -2,6 +2,8 @@
 # Created by https://wwwtoptal.com/developers/gitignore/api/python,visualstudio,visualstudiocode,c++,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudio,visualstudiocode,c++,cmake
 
+template-solutions/
+
 ### C++ ###
 # Prerequisites
 *.d

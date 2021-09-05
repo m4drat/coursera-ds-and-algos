@@ -1,0 +1,1 @@
+add_subdirectory(2_maximum_pairwise_product)

@@ -1,0 +1,4 @@
+cmake_minimum_required(VERSION 3.18)
+project(6_last_digit_of_the_sum_of_fibonacci_numbers LANGUAGES CXX)
+
+add_executable(${PROJECT_NAME} 6_last_digit_of_the_sum_of_fibonacci_numbers.cpp)

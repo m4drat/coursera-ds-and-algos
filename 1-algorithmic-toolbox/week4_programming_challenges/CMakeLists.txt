@@ -1,0 +1,6 @@
+add_subdirectory(1_binary_search)
+add_subdirectory(2_majority_element)
+add_subdirectory(3_improving_quicksort)
+add_subdirectory(4_number_of_inversions)
+add_subdirectory(5_organizing_a_lottery)
+add_subdirectory(6_closest_points)

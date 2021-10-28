@@ -1,0 +1,7 @@
+add_subdirectory(1_money_change)
+add_subdirectory(2_maximum_value_of_the_loot)
+add_subdirectory(3_car_fueling)
+add_subdirectory(4_maximum_advertisement_revenue)
+add_subdirectory(5_collecting_signatures)
+add_subdirectory(6_maximum_number_of_prizes)
+add_subdirectory(7_maximum_salary)

@@ -27,6 +27,12 @@ uint64_t FibonacciMod(uint64_t t_N, uint64_t t_Modulus) {
     uint64_t prev{ 0 };
     uint64_t current{ 1 };
 
+    if (t_N % pisanoPeriod == 0) {
+        return 0;
+    } else if (t_N % pisanoPeriod == 1) {
+        return 1;
+    }
+
     for (uint32_t i = 2; i <= t_N % pisanoPeriod; i++) {
         uint64_t old = current;
         current = (prev + current) % t_Modulus;

@@ -1,25 +1,56 @@
+#include <vector>
 #include <iostream>
+#include <algorithm>
+#include <cmath>
 
-int fibonacci_sum_squares_naive(long long n) {
-    if (n <= 1)
-        return n;
+uint64_t CalculatePisanoPeriod(uint64_t t_Modulus) {
+    uint64_t prev{ 0 };
+    uint64_t current{ 1 };
+    uint64_t pisanoPeriod{ 0 };
 
-    long long previous = 0;
-    long long current  = 1;
-    long long sum      = 1;
+    for (uint32_t i = 0; i <= t_Modulus * t_Modulus; i++) {
+        uint64_t old = current;
+        current = (prev + current) % t_Modulus;
+        prev = old;
+        pisanoPeriod++;
 
-    for (long long i = 0; i < n - 1; ++i) {
-        long long tmp_previous = previous;
-        previous = current;
-        current = tmp_previous + current;
-        sum += current * current;
+        if (prev == 0 && current == 1) {
+            return pisanoPeriod;
+        }
     }
-
-    return sum % 10;
+    
+    return -1;
 }
 
-int main() {
-    long long n = 0;
+uint8_t FibonacciSquaresSum(uint64_t t_N) {
+    constexpr uint64_t c_Modulus { 10 };
+
+    uint64_t pisanoPeriod = CalculatePisanoPeriod(c_Modulus);
+    uint64_t prev{ 0 };
+    uint64_t current{ 1 };
+    uint8_t sum{ 1 };
+
+    if (t_N % pisanoPeriod == 0) {
+        return 0;
+    } else if (t_N % pisanoPeriod == 1) {
+        return 1;
+    }
+
+    for (uint32_t i = 2; i <= t_N % pisanoPeriod; i++) {
+        uint64_t old = current;
+        current = (prev + current) % c_Modulus;
+        prev = old;
+
+        sum = (current * current + sum) % c_Modulus;
+    }
+
+    return sum;
+}
+
+int main(int argc, char* argv[]) {
+    uint64_t n;
     std::cin >> n;
-    std::cout << fibonacci_sum_squares_naive(n);
+    std::cout << (uint32_t)FibonacciSquaresSum(n) << std::endl;
+
+    return 0;
 }

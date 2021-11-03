@@ -4,6 +4,10 @@
 
 using std::vector;
 
+/**
+ * 6 different algorithms to implement: https://leetcode.com/problems/majority-element/solution/
+ */
+
 int get_majority_element(vector<int> &a, int left, int right) {
   if (left == right) return -1;
   if (left + 1 == right) return a[left];

@@ -1,15 +1,15 @@
 #include <iostream>
 
-int GetChange(int money) {
+uint32_t GetChange(uint32_t t_Money) {
     uint32_t minNumbersOfCoins{ 0 };
 
-    minNumbersOfCoins += money / 10;
-    money %= 10;
+    minNumbersOfCoins += t_Money / 10;
+    t_Money %= 10;
 
-    minNumbersOfCoins += money / 5;
-    money %= 5;
+    minNumbersOfCoins += t_Money / 5;
+    t_Money %= 5;
 
-    minNumbersOfCoins += money;
+    minNumbersOfCoins += t_Money;
 
     return minNumbersOfCoins;
 }

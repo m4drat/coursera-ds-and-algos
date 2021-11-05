@@ -7,7 +7,7 @@ uint32_t Gcd(uint32_t t_A, uint32_t t_B) {
         return t_A;
     }
 
-    return gcd(t_B, t_A % t_B);
+    return Gcd(t_B, t_A % t_B);
 }
 
 int main(int argc, char* argv[]) {

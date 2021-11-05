@@ -1,6 +1,6 @@
 # 1. Algorithmic toolbox
 
-Almost every solution for a problem has function called `CheckSolution` which will check if solution is correct using predefined testcase and/or obviously correct implementation.
+Almost every solution for a problem (starting from week-3) has function called `CheckSolution` which will check if solution is correct using predefined testcase and/or obviously correct implementation.
 
 ## Week 1
 
@@ -32,6 +32,8 @@ Almost every solution for a problem has function called `CheckSolution` which wi
 
 1. Binary search ✔️
 2. Majority element ✔️
+   - Great writeup: [Northwestern University. HW-4 by Debasish Das](http://users.ece.northwestern.edu/~dda902/336/hw4-sol.pdf)
+   - Different algorithms implemented using java: [leetcode](https://leetcode.com/problems/majority-element/solution/)
 3. Improving quicksort ❌
 4. Number of inversions ❌
 5. Organizing a lottery ❌

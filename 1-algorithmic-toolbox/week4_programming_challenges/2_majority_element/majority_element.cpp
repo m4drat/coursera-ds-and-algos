@@ -3,27 +3,9 @@
 #include <vector>
 #include <cmath>
 
-#include <sstream>
-#include <iterator>
+#include "utils.hpp"
 
 constexpr int32_t NO_MAJORITY_ELEMENT{ -1 };
-
-template <typename T>
-std::string VecToStr(const std::vector<T>& vec) {
-    std::ostringstream oss;
-
-    if (!vec.empty())
-    {
-        // Convert all but the last element to avoid a trailing ","
-        std::copy(vec.begin(), vec.end() - 1, std::ostream_iterator<T>(oss, ", "));
-
-        // Now add the last element with no delimiter
-        oss << vec.back();
-    }
-
-    return oss.str();
-}
-
 
 /**
  * 6 different algorithms to implement: https://leetcode.com/problems/majority-element/solution/
@@ -113,7 +95,7 @@ void CheckSolution() {
         int32_t myAlgoAns = GetMajorityElement(testcase.array, 0, testcase.array.size() - 1);
         // int32_t correctAns = GetMajorityElementCorrect(testcase.array);
         if (myAlgoAns != testcase.answer) {
-            throw std::runtime_error("Got: " + std::to_string(myAlgoAns) + ". Expected: " + std::to_string(testcase.answer) + ". Testcase: " + VecToStr(testcase.array));
+            throw std::runtime_error("Got: " + std::to_string(myAlgoAns) + ". Expected: " + std::to_string(testcase.answer) + ". Testcase: " + utils::VecToStr(testcase.array));
         }
     }
 }

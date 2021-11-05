@@ -35,6 +35,10 @@ Almost every solution for a problem (starting from week-3) has function called `
    - Great writeup: [Northwestern University. HW-4 by Debasish Das](http://users.ece.northwestern.edu/~dda902/336/hw4-sol.pdf)
    - Different algorithms implemented using java: [leetcode](https://leetcode.com/problems/majority-element/solution/)
 3. Improving quicksort ❌
+   - [Randomized Algorithms, Quicksort](https://algoparc.ics.hawaii.edu/~nodari/teaching/f15/Notes/Topic-05B.html)
+   - [Slides](https://people.engr.tamu.edu/andreas-klappenecker/csce411-f17/csce411-random3.pdf)
+   - [Slides](http://www.cs.tulane.edu/~carola/teaching/cmps2200/fall14/slides/Lecture-randomizedAlgos.pdf)
+   - [3-Way quicksort](https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/)
 4. Number of inversions ❌
 5. Organizing a lottery ❌
 6. Closest points ❌

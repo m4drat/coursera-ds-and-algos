@@ -1,45 +1,97 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <cstdlib>
 
-using std::vector;
-using std::swap;
+#include "utils.hpp"
 
-int partition2(vector<int> &a, int l, int r) {
-  int x = a[l];
-  int j = l;
-  for (int i = l + 1; i <= r; i++) {
-    if (a[i] <= x) {
-      j++;
-      swap(a[i], a[j]);
+struct Segment {
+    int32_t start;
+    int32_t end;
+};
+
+/**
+ * @brief This function takes and array of n elements and partitions it
+ * in such a way that every element less than a pivot is going to be placed
+ * to the left, every element larger than a pivot is going to be placed
+ * to the right and every element that is equal to the pivot will be placed
+ * with all of the other pivot elements. 
+ * 
+ * @param array 
+ * @param left 
+ * @param right 
+ * @return Segment 
+ */
+Segment Partition3(std::vector<int32_t>& array, int32_t left, int32_t right) {
+    int32_t pivotIdx = left + utils::rng::xorshf96() % (right - left + 1);
+    int32_t pivotElem = array[pivotIdx];
+
+    for (uint32_t i = left; i <= right; i++) {
+        if (array[i] < pivotElem) {
+            std::swap(array[left++], array[i]);
+        } else if (array[i] > pivotElem) {
+            std::swap(array[right--], array[i--]);
+        } else {
+            /* No-op case. Just increase the counter. */
+        }
     }
-  }
-  swap(a[l], a[j]);
-  return j;
+
+    return { .start = left, .end = right };
 }
 
-void randomized_quick_sort(vector<int> &a, int l, int r) {
-  if (l >= r) {
-    return;
-  }
+void RandomizedQuickSort(std::vector<int32_t>& array, int32_t left, int32_t right) {
+    if (left >= right) {
+        return;
+    }
 
-  int k = l + rand() % (r - l + 1);
-  swap(a[l], a[k]);
-  int m = partition2(a, l, r);
+    Segment sortedRange = Partition3(array, left, right);
 
-  randomized_quick_sort(a, l, m - 1);
-  randomized_quick_sort(a, m + 1, r);
+    RandomizedQuickSort(array, left, sortedRange.start - 1);
+    RandomizedQuickSort(array, sortedRange.end + 1, right);
+}
+
+void CheckSolution() {
+    struct ProblemStatement {
+        std::vector<int32_t> array;
+        std::vector<int32_t> answer;
+    };
+
+    std::vector<ProblemStatement> problemSolutionPairs {
+        ProblemStatement{ .array{ 5, 3, 7, 1, 2, 3 }, .answer{ 1, 2, 3, 3, 5, 7 }},
+        ProblemStatement{ .array{ 1, 1, 1, 3 }, .answer{ 1, 1, 1, 3 }},
+        ProblemStatement{ .array{ 0, 8, 2, 3, 3, 3, 3, 4, 9 }, .answer{ 0, 2, 3, 3, 3, 3, 4, 8, 9 }},
+        ProblemStatement{ .array{ 1, 1, 1, 1 }, .answer{ 1, 1, 1, 1 }},
+        ProblemStatement{ .array{ 1, 2, 3, 4 }, .answer{ 1, 2, 3, 4 }},
+        ProblemStatement{ .array{ 4, 3, 2, 1 }, .answer{ 1, 2, 3, 4 }},
+        ProblemStatement{ .array{ 1 }, .answer{ 1 }},
+        ProblemStatement{ .array{ 1, 2 }, .answer{ 1, 2 }},
+        ProblemStatement{ .array{ 2, 1 }, .answer{ 1, 2 }},
+        ProblemStatement{ .array{ 2, 3, 1 }, .answer{ 1, 2, 3 }},
+        ProblemStatement{ .array{ 2, 3, 1, 1, 2 }, .answer{ 1, 1, 2, 2, 3 }},
+        ProblemStatement{ .array{ 2, 3, 9, 2, 2 }, .answer{ 2, 2, 2, 3, 9 }},
+        ProblemStatement{ .array{ 1, 3, 1, 2, 3, 3, 1, 7, 3, 3 }, .answer{ 1, 1, 1, 2, 3, 3, 3, 3, 3, 7 }},
+    };
+
+    for (auto& testcase : problemSolutionPairs) {
+        RandomizedQuickSort(testcase.array, 0, testcase.array.size() - 1);
+        if (testcase.array != testcase.answer) {
+            throw std::runtime_error("Got: " + utils::VecToStr(testcase.array) + ". Expected: " + utils::VecToStr(testcase.answer));
+        }
+    }
 }
 
 int main() {
-  int n;
-  std::cin >> n;
-  vector<int> a(n);
-  for (size_t i = 0; i < a.size(); ++i) {
-    std::cin >> a[i];
-  }
-  randomized_quick_sort(a, 0, a.size() - 1);
-  for (size_t i = 0; i < a.size(); ++i) {
-    std::cout << a[i] << ' ';
-  }
+    // uint32_t n;
+    // std::cin >> n;
+    // std::vector<uint32_t> array(n);
+    // for (size_t i = 0; i < array.size(); ++i) {
+    //     std::cin >> array[i];
+    // }
+    // RandomizedQuickSort(array, 0, array.size() - 1);
+
+    // for (size_t i = 0; i < array.size(); ++i) {
+    //     std::cout << array[i] << ' ';
+    // }
+
+    CheckSolution();
 }

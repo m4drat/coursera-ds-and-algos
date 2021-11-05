@@ -61,6 +61,13 @@ void CheckSolution() {
         
         ProblemStatement{ .array{ 1, 2, 2, 3, 4, 5 }, .elementToFind{ 2 }, .answer{ 2 }},
         ProblemStatement{ .array{ 3, 3, 3, 3, 3 }, .elementToFind{ 3 }, .answer{ 2 }},
+
+        ProblemStatement{ .array{ 1, 5, 8, 12, 13 }, .elementToFind{ 8 }, .answer{ 2 }},
+        ProblemStatement{ .array{ 1, 5, 8, 12, 13 }, .elementToFind{ 1 }, .answer{ 0 }},
+        ProblemStatement{ .array{ 1, 5, 8, 12, 13 }, .elementToFind{ 23 }, .answer{ -1 }},
+        ProblemStatement{ .array{ 1, 5, 8, 12, 13 }, .elementToFind{ 1 }, .answer{ 0 }},
+        ProblemStatement{ .array{ 1, 5, 8, 12, 13 }, .elementToFind{ 11 }, .answer{ -1 }},
+
     };
 
     for (const auto& testcase : problemSolutionPairs) {

@@ -2,8 +2,13 @@
 #include <iostream>
 #include <algorithm>
 
-int64_t maxPairwiseProduct(std::vector<int32_t>& t_Numbers) {
+int64_t MaxPairwiseProduct(std::vector<int32_t>& t_Numbers) {
     std::sort(t_Numbers.begin(), t_Numbers.end());
+
+    if (t_Numbers.size() < 2) {
+        return 0;
+    }
+
     return (int64_t)(*(--t_Numbers.end())) * (int64_t)(*(t_Numbers.end() - 2));
 }
 
@@ -38,7 +43,7 @@ int main(int argc, char* argv[]) {
         numbers.emplace_back(currentNumber);
     }
 
-    std::cout << maxPairwiseProduct(numbers) << std::endl;
+    std::cout << MaxPairwiseProduct(numbers) << std::endl;
 
     return 0;
 }

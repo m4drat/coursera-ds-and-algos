@@ -27,6 +27,7 @@ std::string VecToStr(const std::vector<T>& vec) {
 
 /**
  * 6 different algorithms to implement: https://leetcode.com/problems/majority-element/solution/
+ * Great article: http://users.ece.northwestern.edu/~dda902/336/hw4-sol.pdf
  */
 
 uint32_t Count(const std::vector<uint32_t>& array, uint32_t key, uint32_t start, uint32_t end) {
@@ -55,7 +56,6 @@ int32_t GetMajorityElement(std::vector<uint32_t>& array, int32_t left, int32_t r
     auto leftPartMajCount = (NO_MAJORITY_ELEMENT == leftPartMaj) ? 0 : Count(array, leftPartMaj, left, right);
     auto rightPartMajCount = (NO_MAJORITY_ELEMENT == rightPartMaj) ? 0 : Count(array, rightPartMaj, left, right);
 
-    // TODO: fix this ceil error!
     if (leftPartMajCount >= std::floor((right - left + 1) / 2.0f) + 1) {
         return leftPartMaj;
     }
@@ -81,7 +81,6 @@ int32_t GetMajorityElementCorrect(std::vector<int32_t>& array) {
 
     return -1;
 }
-
 
 void CheckSolution() {
     struct ProblemStatement {

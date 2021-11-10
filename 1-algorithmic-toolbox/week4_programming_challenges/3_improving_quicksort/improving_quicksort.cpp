@@ -20,12 +20,10 @@ struct Segment {
  * @param array 
  * @param left 
  * @param right 
+ * @param pivotElem 
  * @return Segment 
  */
-Segment Partition3(std::vector<int32_t>& array, int32_t left, int32_t right) {
-    int32_t pivotIdx = left + utils::rng::xorshf96() % (right - left + 1);
-    int32_t pivotElem = array[pivotIdx];
-
+Segment Partition3(std::vector<int32_t>& array, int32_t left, int32_t right, int32_t pivotElem) {
     for (uint32_t i = left; i <= right; i++) {
         if (array[i] < pivotElem) {
             std::swap(array[left++], array[i]);
@@ -44,7 +42,10 @@ void RandomizedQuickSort(std::vector<int32_t>& array, int32_t left, int32_t righ
         return;
     }
 
-    Segment sortedRange = Partition3(array, left, right);
+    int32_t pivotIdx = left + utils::rng::xorshf96() % (right - left + 1);
+    int32_t pivotElem = array[pivotIdx];
+
+    Segment sortedRange = Partition3(array, left, right, pivotElem);
 
     RandomizedQuickSort(array, left, sortedRange.start - 1);
     RandomizedQuickSort(array, sortedRange.end + 1, right);
@@ -63,6 +64,8 @@ void CheckSolution() {
         ProblemStatement{ .array{ 1, 1, 1, 1 }, .answer{ 1, 1, 1, 1 }},
         ProblemStatement{ .array{ 1, 2, 3, 4 }, .answer{ 1, 2, 3, 4 }},
         ProblemStatement{ .array{ 4, 3, 2, 1 }, .answer{ 1, 2, 3, 4 }},
+        ProblemStatement{ .array{ 5, 4, 3, 2, 1 }, .answer{ 1, 2, 3, 4, 5 }},
+        ProblemStatement{ .array{ 3, 1, 2, 5 }, .answer{ 1, 2, 3, 5 }},
         ProblemStatement{ .array{ 1 }, .answer{ 1 }},
         ProblemStatement{ .array{ 1, 2 }, .answer{ 1, 2 }},
         ProblemStatement{ .array{ 2, 1 }, .answer{ 1, 2 }},

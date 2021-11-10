@@ -39,7 +39,8 @@ Almost every solution for a problem (starting from week-3) has function called `
    - [Slides](https://people.engr.tamu.edu/andreas-klappenecker/csce411-f17/csce411-random3.pdf)
    - [Slides](http://www.cs.tulane.edu/~carola/teaching/cmps2200/fall14/slides/Lecture-randomizedAlgos.pdf)
    - [3-Way quicksort (with a really bad code)](https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/)
-4. Number of inversions ❌
+4. Number of inversions ✔️
+   - [Some intuition behind the algorithm](https://www.geeksforgeeks.org/counting-inversions/)
 5. Organizing a lottery ❌
 6. Closest points ❌
 

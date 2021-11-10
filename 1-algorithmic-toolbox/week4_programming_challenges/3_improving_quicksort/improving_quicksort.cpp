@@ -23,7 +23,7 @@ struct Segment {
  * @param pivotElem 
  * @return Segment 
  */
-Segment Partition3(std::vector<int32_t>& array, int32_t left, int32_t right, int32_t pivotElem) {
+Segment RandomPartition3(std::vector<int32_t>& array, int32_t left, int32_t right, int32_t pivotElem) {
     for (uint32_t i = left; i <= right; i++) {
         if (array[i] < pivotElem) {
             std::swap(array[left++], array[i]);
@@ -45,7 +45,7 @@ void RandomizedQuickSort(std::vector<int32_t>& array, int32_t left, int32_t righ
     int32_t pivotIdx = left + utils::rng::xorshf96() % (right - left + 1);
     int32_t pivotElem = array[pivotIdx];
 
-    Segment sortedRange = Partition3(array, left, right, pivotElem);
+    Segment sortedRange = RandomPartition3(array, left, right, pivotElem);
 
     RandomizedQuickSort(array, left, sortedRange.start - 1);
     RandomizedQuickSort(array, sortedRange.end + 1, right);

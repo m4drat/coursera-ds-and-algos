@@ -19,8 +19,6 @@ std::vector<int32_t> CountSegmentsFast(std::vector<int32_t>& starts, std::vector
     std::sort(std::begin(ends), std::end(ends));
 
     for (auto point : points) {
-        cnt.emplace_back(0);
-
         // UpperBound - returns iterator to the first element that is greater than the point.
         auto itStarts = std::upper_bound(std::begin(starts), std::end(starts), point);
         auto rightStartsCnt = std::distance(std::end(starts), itStarts);
@@ -31,7 +29,7 @@ std::vector<int32_t> CountSegmentsFast(std::vector<int32_t>& starts, std::vector
         auto itEnds = std::lower_bound(std::begin(ends), std::end(ends), point);
         auto rightEndsCnt = std::distance(std::end(ends), itEnds);
 
-        cnt.back() = std::abs(rightStartsCnt - rightEndsCnt);
+        cnt.emplace_back(std::abs(rightStartsCnt - rightEndsCnt));
     }
 
     return cnt;
@@ -110,14 +108,19 @@ void CheckSolution() {
         ProblemStatement{ .starts{ 2, 11 }, .ends{ 10, 14 }, .points{ 1, 6, 12, 15 }, .answer{ 0, 1, 1, 0 }, .name{ "5 - testcase" } },
         ProblemStatement{ .starts{ 2, 10 }, .ends{ 10, 14 }, .points{ 1, 2, 6, 10, 12, 14, 15 }, .answer{ 0, 1, 1, 2, 1, 1, 0 }, .name{ "6 - testcase" } },
         ProblemStatement{ .starts{ 2, 8 }, .ends{ 12, 14 }, .points{ 1, 2, 6, 8, 10, 12, 14, 15 }, .answer{ 0, 1, 1, 2, 2, 2, 1, 0 }, .name{ "7 - testcase" } },
+        ProblemStatement{ .starts{ 2, 2, 2 }, .ends{ 3, 4, 5 }, .points{ 1, 2, 3, 4, 5, 6 }, .answer{ 0, 3, 3, 2, 1, 0 }, .name{ "8 - testcase" } },
+        ProblemStatement{ .starts{ 3, 4, 5 }, .ends{ 5, 5, 5 }, .points{ 2, 3, 4, 5, 6 }, .answer{ 0, 1, 2, 3, 0}, .name{ "9 - testcase" } },
+        ProblemStatement{ .starts{ 1, 2, 5, 8, 13, 15 }, .ends{ 5, 5, 9, 12, 14, 15 }, .points{ 0, 1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 14, 15 }, .answer{ 0, 1, 2, 2, 2, 3, 1, 2, 2, 1, 1, 1, 1, 1 }, .name{ "10 - testcase" } },
+        ProblemStatement{ .starts{ 0, 2, 4, 6, 7 }, .ends{ 9, 10, 11, 11, 11 }, .points{ -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, .answer{ 0, 1, 1, 2, 2, 3, 3, 4, 5, 5, 5, 4, 3, 0 }, .name{ "11 - testcase" } },
     };
 
     for (auto& testcase : problemSolutionPairs) {
         auto correctAnswer = CountSegmentsSlow(testcase.starts, testcase.ends, testcase.points);
         auto myAlgoAns = CountSegmentsFast(testcase.starts, testcase.ends, testcase.points);
         if (correctAnswer != myAlgoAns || myAlgoAns != testcase.answer || correctAnswer != testcase.answer) {
-            throw std::runtime_error("Got: " + utils::VecToStr(myAlgoAns) + ".\n"
-                                     "Expected: " + utils::VecToStr(correctAnswer) + ".\n"
+            throw std::runtime_error("\n"
+                                     "Got        : " + utils::VecToStr(myAlgoAns) + ".\n"
+                                     "Expected   : " + utils::VecToStr(correctAnswer) + ".\n"
                                      "On testcase: " + testcase.name + "\n");
         }
     }

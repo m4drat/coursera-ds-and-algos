@@ -1,38 +1,155 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <cassert>
+#include <random>
 
-using std::vector;
+#include "utils.hpp"
 
-vector<int> fast_count_segments(vector<int> starts, vector<int> ends, vector<int> points) {
-  vector<int> cnt(points.size());
-  //write your code here
-  return cnt;
-}
+constexpr int32_t c_MaxCoord{ 100'000'000 };
+constexpr int32_t c_MinCoord{ -100'000'000 };
 
-vector<int> naive_count_segments(vector<int> starts, vector<int> ends, vector<int> points) {
-  vector<int> cnt(points.size());
-  for (size_t i = 0; i < points.size(); i++) {
-    for (size_t j = 0; j < starts.size(); j++) {
-      cnt[i] += starts[j] <= points[i] && points[i] <= ends[j];
+std::vector<int32_t> CountSegmentsFast(std::vector<int32_t>& starts, std::vector<int32_t>& ends, std::vector<int32_t> points) {
+    PROFILE_FUNCTION();
+
+    std::vector<int32_t> cnt;
+    cnt.reserve(points.size());
+
+    std::sort(std::begin(starts), std::end(starts));
+    std::sort(std::begin(ends), std::end(ends));
+
+    for (auto point : points) {
+        cnt.emplace_back(0);
+
+        // UpperBound - returns iterator to the first element that is greater than the point.
+        auto itStarts = std::upper_bound(std::begin(starts), std::end(starts), point);
+        auto rightStartsCnt = std::distance(std::end(starts), itStarts);
+
+        // LowerBound - return iterator to the first element that is greater than or equal to the point.
+        // We are using pair of UpperBound/LowerBound, because we want to handle the case, where end of one
+        // segment is start of the other one, and the point is located exactly at this coordinate.
+        auto itEnds = std::lower_bound(std::begin(ends), std::end(ends), point);
+        auto rightEndsCnt = std::distance(std::end(ends), itEnds);
+
+        cnt.back() = std::abs(rightStartsCnt - rightEndsCnt);
     }
-  }
-  return cnt;
+
+    return cnt;
 }
 
-int main() {
-  int n, m;
-  std::cin >> n >> m;
-  vector<int> starts(n), ends(n);
-  for (size_t i = 0; i < starts.size(); i++) {
-    std::cin >> starts[i] >> ends[i];
-  }
-  vector<int> points(m);
-  for (size_t i = 0; i < points.size(); i++) {
-    std::cin >> points[i];
-  }
-  //use fast_count_segments
-  vector<int> cnt = naive_count_segments(starts, ends, points);
-  for (size_t i = 0; i < cnt.size(); i++) {
-    std::cout << cnt[i] << ' ';
-  }
+std::vector<int32_t> CountSegmentsSlow(std::vector<int32_t>& starts, std::vector<int32_t>& ends, std::vector<int32_t> points) {
+    PROFILE_FUNCTION();
+
+    assert(starts.size() == ends.size());
+
+    std::vector<int32_t> cnt(points.size());
+    for (size_t i = 0; i < points.size(); i++) {
+        for (size_t j = 0; j < starts.size(); j++) {
+            cnt[i] += starts[j] <= points[i] && points[i] <= ends[j];
+        }
+    }
+    return cnt;
+}
+
+std::pair<std::vector<int32_t>, std::vector<int32_t>> GenerateRandomSegments(uint32_t length) {
+    PROFILE_FUNCTION();
+
+    std::vector<int32_t> starts;
+    std::vector<int32_t> ends;
+    starts.reserve(length);
+    ends.reserve(length);
+
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
+
+    for (uint32_t currSegmentIndex = 0; currSegmentIndex < length; ++currSegmentIndex) {
+        std::uniform_int_distribution<int32_t> distrLeft(c_MinCoord, c_MaxCoord);
+        int32_t left = distrLeft(generator);
+
+        std::uniform_int_distribution<int32_t> distrRight(left, c_MaxCoord);
+        int32_t right = distrRight(generator);
+
+        assert(right >= left);
+
+        starts.emplace_back(left);
+        ends.emplace_back(right);
+    }
+
+    return std::move(std::make_pair(starts, ends));
+}
+
+std::vector<int32_t> GenerateRandomPoints(uint32_t length) {
+    std::vector<int32_t> points;
+    points.reserve(length);
+
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
+    std::uniform_int_distribution<int32_t> distr(c_MinCoord, c_MaxCoord);
+
+    for (uint32_t currPoint = 0; currPoint < length; ++currPoint) {
+        points.emplace_back(distr(generator));
+    }
+
+    return std::move(points);
+}
+
+void CheckSolution() {
+    struct ProblemStatement {
+        std::vector<int32_t> starts;
+        std::vector<int32_t> ends;
+        std::vector<int32_t> points;
+        std::vector<int32_t> answer;
+        std::string name;
+    };
+
+    std::vector<ProblemStatement> problemSolutionPairs {
+        ProblemStatement{ .starts{ 0, 7 }, .ends{ 5, 10 }, .points{ 1, 6, 11 }, .answer{ 1, 0, 0 }, .name{ "1 - testcase" } },
+        ProblemStatement{ .starts{ 1, 5, 6 }, .ends{ 5, 9, 11 }, .points{ 7, 1, 12 }, .answer{ 2, 1, 0 }, .name{ "2 - testcase" } },
+        ProblemStatement{ .starts{ -10 }, .ends{ 10 }, .points{ -100, 100, 0 }, .answer{ 0, 0, 1 }, .name{ "3 - testcase" } },
+        ProblemStatement{ .starts{ 0, -3, 7 }, .ends{ 5, 2, 10 }, .points{ 1, 6 }, .answer{ 2, 0 }, .name{ "4 - testcase" } },
+        ProblemStatement{ .starts{ 2, 11 }, .ends{ 10, 14 }, .points{ 1, 6, 12, 15 }, .answer{ 0, 1, 1, 0 }, .name{ "5 - testcase" } },
+        ProblemStatement{ .starts{ 2, 10 }, .ends{ 10, 14 }, .points{ 1, 2, 6, 10, 12, 14, 15 }, .answer{ 0, 1, 1, 2, 1, 1, 0 }, .name{ "6 - testcase" } },
+        ProblemStatement{ .starts{ 2, 8 }, .ends{ 12, 14 }, .points{ 1, 2, 6, 8, 10, 12, 14, 15 }, .answer{ 0, 1, 1, 2, 2, 2, 1, 0 }, .name{ "7 - testcase" } },
+    };
+
+    for (auto& testcase : problemSolutionPairs) {
+        auto correctAnswer = CountSegmentsSlow(testcase.starts, testcase.ends, testcase.points);
+        auto myAlgoAns = CountSegmentsFast(testcase.starts, testcase.ends, testcase.points);
+        if (correctAnswer != myAlgoAns || myAlgoAns != testcase.answer || correctAnswer != testcase.answer) {
+            throw std::runtime_error("Got: " + utils::VecToStr(myAlgoAns) + ".\n"
+                                     "Expected: " + utils::VecToStr(correctAnswer) + ".\n"
+                                     "On testcase: " + testcase.name + "\n");
+        }
+    }
+
+    for (auto n : { 100, 101, 128, 256, 257, 263, 1023, 1024, 12534, 28900, 35201, 43720, 50000 }) {
+        auto randomSegments = std::move(GenerateRandomSegments(n));
+        auto randomPoints = std::move(GenerateRandomPoints(n));
+        auto correctAnswer = CountSegmentsSlow(randomSegments.first, randomSegments.second, randomPoints);
+        auto myAlgoAns = CountSegmentsFast(randomSegments.first, randomSegments.second, randomPoints);
+        if (correctAnswer != myAlgoAns) {
+            throw std::runtime_error("Got: " + utils::VecToStr(myAlgoAns) + ".\n"
+                                     "Expected: " + utils::VecToStr(correctAnswer) + ".\n");
+        }
+    }
+}
+
+int32_t main() {
+    CheckSolution();
+
+    // int32_t n, m;
+    // std::cin >> n >> m;
+    // std::vector<int32_t> starts(n), ends(n);
+    // for (size_t i = 0; i < starts.size(); i++) {
+    //     std::cin >> starts[i] >> ends[i];
+    // }
+    // std::vector<int32_t> points(m);
+    // for (size_t i = 0; i < points.size(); i++) {
+    //     std::cin >> points[i];
+    // }
+
+    // std::vector<int32_t> cnt = CountSegmentsSlow(starts, ends, points);
+    // for (size_t i = 0; i < cnt.size(); i++) {
+    //     std::cout << cnt[i] << ' ';
+    // }
 }

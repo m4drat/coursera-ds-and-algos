@@ -41,7 +41,7 @@ Almost every solution for a problem (starting from week-3) has function called `
    - [3-Way quicksort (with a really bad code)](https://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/)
 4. Number of inversions ✔️
    - [Some intuition behind the algorithm](https://www.geeksforgeeks.org/counting-inversions/)
-5. Organizing a lottery ❌
+5. Organizing a lottery ✔️
 6. Closest points ❌
 
 ## Week 5: Dynamic programming - 1

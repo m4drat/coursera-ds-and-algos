@@ -10,6 +10,7 @@
 #define PROFILE_FUNCTION() PROFILE_SCOPE(__PRETTY_FUNCTION__)
 
 namespace utils {
+
 template <typename T>
 std::string VecToStr(const std::vector<T>& vec) {
     std::ostringstream oss;
@@ -24,6 +25,11 @@ std::string VecToStr(const std::vector<T>& vec) {
     }
 
     return oss.str();
+}
+
+template <typename T>
+bool CompareFloat(const T& a, const T& b, const T& eps = 0.00001f) {
+    return std::abs(a - b) < eps;
 }
 
 namespace rng {

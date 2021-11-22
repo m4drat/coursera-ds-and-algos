@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.18)
 project(algorithms_and_ds LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
+
 include_directories("utils/")
 
 # add_subdirectory("1-algorithmic-toolbox/week1_programming_challenges")

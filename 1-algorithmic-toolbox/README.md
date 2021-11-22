@@ -43,6 +43,8 @@ Almost every solution for a problem (starting from week-3) has function called `
    - [Some intuition behind the algorithm](https://www.geeksforgeeks.org/counting-inversions/)
 5. Organizing a lottery ✔️
 6. Closest points ❌
+   - [Correctness proof](https://link.springer.com/chapter/10.1007/978-3-030-51054-1_20)
+   - [Algorithm explanation](https://www.youtube.com/watch?v=6u_hWxbOc7E&t=123s&ab_channel=LingQi)
 
 ## Week 5: Dynamic programming - 1
 

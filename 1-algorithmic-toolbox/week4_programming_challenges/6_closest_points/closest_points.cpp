@@ -30,6 +30,10 @@ struct Point {
     }
 };
 
+/**
+ * First version that uses strip points sorting
+ */
+
 double MinimalDistanceFastLogic(std::vector<Point>&& points);
 
 double MinimalDistanceFast(std::vector<int32_t>& pointsX, std::vector<int32_t>& pointsY) {
@@ -147,6 +151,116 @@ double MinimalDistanceFastLogic(std::vector<Point>&& points) {
     }
 
     return std::min({leftMinDist, rightMinDist, stripMinDistance});
+}
+
+/**
+ * Alternative solution with similar performance
+ */ 
+
+double MinimalDistanceAlternativeFastLogic(std::vector<Point>&& pointsSortedByX, std::vector<Point>&& pointsSortedByY);
+
+double MinimalDistanceAlternativeFast(std::vector<int32_t>& pointsX, std::vector<int32_t>& pointsY) {
+    PROFILE_FUNCTION();
+
+    assert(pointsX.size() == pointsY.size());
+    
+    std::vector<Point> pointsSortedByX, pointsSortedByY;
+    pointsSortedByX.reserve(pointsX.size());
+    pointsSortedByY.reserve(pointsY.size());
+
+    for (uint32_t pointIdx = 0; pointIdx < pointsX.size(); pointIdx++) {
+        pointsSortedByX.emplace_back(Point{ .x = pointsX[pointIdx], .y = pointsY[pointIdx]});
+        pointsSortedByY.emplace_back(Point{ .x = pointsX[pointIdx], .y = pointsY[pointIdx]});
+    }
+
+    // sort all points by the x coordinate
+    std::sort(pointsSortedByX.begin(), pointsSortedByX.end(), [](const Point& p1, const Point& p2) {
+        return p1.x < p2.x;
+    });
+
+    // sort all points by the y coordinate
+    std::sort(pointsSortedByY.begin(), pointsSortedByY.end(), [](const Point& p1, const Point& p2) {
+        return p1.y < p2.y;
+    });
+
+    return MinimalDistanceAlternativeFastLogic(std::move(pointsSortedByX), std::move(pointsSortedByY));
+}
+
+double SmallestInStrip(std::vector<Point>::iterator stripStart, std::vector<Point>::iterator stripEnd, double currMinDist) {
+    double stripMinDistance = currMinDist;
+    // For each point compare this point with at most 6 others
+    // Total runtime of this loop is at most n * 6
+    for (auto currPoint = stripStart; currPoint != stripEnd; ++currPoint) {
+        for (auto innerPoint = std::next(currPoint, 1); innerPoint != stripEnd && (innerPoint->y - currPoint->y) <= stripMinDistance; ++innerPoint) {
+            double currStripMinDist = currPoint->DistanceTo(*innerPoint);
+            stripMinDistance = (currStripMinDist < stripMinDistance) ? currStripMinDist : stripMinDistance;
+        }
+    }
+
+    return stripMinDistance;
+}
+
+double MinimalDistanceAlternativeFastLogic(std::vector<Point>&& pointsSortedByX, std::vector<Point>&& pointsSortedByY) {
+    assert(pointsSortedByX.size() >= 2 && "Got less than two points in the subset");
+
+    // We have two basecase:
+    // Size of pointsSortedByX is equal to 2 or to 3
+    if (pointsSortedByX.size() == 2) {
+        return pointsSortedByX.front().DistanceTo(pointsSortedByX.back());
+    } else if (pointsSortedByX.size() == 3) {
+        double d1 = pointsSortedByX[0].DistanceTo(pointsSortedByX[1]);
+        double d2 = pointsSortedByX[0].DistanceTo(pointsSortedByX[2]);
+        double d3 = pointsSortedByX[1].DistanceTo(pointsSortedByX[2]);
+        return std::min({ d1, d2, d3 });
+    }
+
+    // Find the middle point (and it's coordinate)
+    uint32_t mid = pointsSortedByX.size() / 2;
+    int32_t splitLineXCoord = pointsSortedByX[mid].x;
+
+    std::vector<Point> pointsSortedByYLeft, pointsSortedByYRight;
+    pointsSortedByYLeft.reserve(mid);
+    pointsSortedByYRight.reserve(mid);
+
+    for (auto& point : pointsSortedByY) {
+        if (point.x <= splitLineXCoord) {
+            pointsSortedByYLeft.push_back(point);  
+        } else {
+            pointsSortedByYRight.push_back(point);  
+        }
+    }
+
+    // Recursively find minimal distances to the left and to the right of the 
+    // middle point
+    std::vector<Point> pointsSortedByXLeft{ pointsSortedByX.begin(), std::next(pointsSortedByX.begin(), mid) };
+    double leftMinDist = MinimalDistanceAlternativeFastLogic(
+        std::move(pointsSortedByXLeft),
+        std::move(pointsSortedByYLeft)
+    );
+    std::vector<Point> pointsSortedByXRight{ std::next(pointsSortedByX.begin(), mid), pointsSortedByX.end() };
+    double rightMinDist = MinimalDistanceAlternativeFastLogic(
+        std::move(pointsSortedByXRight),
+        std::move(pointsSortedByYRight)
+    );
+
+    // Combine result of previous two recursive calls by examining all pointsSortedByX inside
+    // strip [splitLineXCoord - leftRightMinDist, splitLineXCoord + leftRightMinDist]
+    double leftRightMinDist = std::min(leftMinDist, rightMinDist);
+    double stripLeftXCoord = splitLineXCoord - leftRightMinDist;
+    double stripRightXCoord = splitLineXCoord + leftRightMinDist;
+
+    // In all points sorted by y coordinate find such points, that they lie inside the strip 
+    // defined by stripLeftXCoord and stripRightXCoord
+    std::vector<Point> stripPoints;
+    std::copy_if(pointsSortedByY.begin(), pointsSortedByY.end(), std::back_inserter(stripPoints), 
+        [splitLineXCoord, leftRightMinDist](const Point& p) {
+            return std::abs(p.x - splitLineXCoord) < leftRightMinDist;
+        }
+    );
+
+    double stripMinDistance = SmallestInStrip(stripPoints.begin(), stripPoints.end(), leftRightMinDist);
+
+    return std::min(leftRightMinDist, stripMinDistance);
 }
 
 double MinimalDistanceSlow(const std::vector<int32_t>& pointsX, const std::vector<int32_t>& pointsY) {

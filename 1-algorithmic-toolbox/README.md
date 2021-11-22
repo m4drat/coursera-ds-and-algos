@@ -42,9 +42,11 @@ Almost every solution for a problem (starting from week-3) has function called `
 4. Number of inversions ✔️
    - [Some intuition behind the algorithm](https://www.geeksforgeeks.org/counting-inversions/)
 5. Organizing a lottery ✔️
-6. Closest points ❌
+6. Closest points ✔️
    - [Correctness proof](https://link.springer.com/chapter/10.1007/978-3-030-51054-1_20)
    - [Algorithm explanation](https://www.youtube.com/watch?v=6u_hWxbOc7E&t=123s&ab_channel=LingQi)
+   - [Plane Sweep algorithm](https://www.cs.mcgill.ca/~cs251/ClosestPair/ClosestPairPS.html)
+   - [DC algorithm](https://www.cs.mcgill.ca/~cs251/ClosestPair/ClosestPairDQ.html)
 
 ## Week 5: Dynamic programming - 1
 

@@ -2,9 +2,11 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 #include <iterator>
 #include <chrono>
 #include <string>
+#include <iostream>
 
 #define PROFILE_SCOPE(name) utils::profiling::ProfilerTimer timer##__LINE__(name)
 #define PROFILE_FUNCTION() PROFILE_SCOPE(__PRETTY_FUNCTION__)
@@ -39,9 +41,9 @@ static uint64_t s_X = 123456789, s_Y = 362436069, s_Z = 521288629;
  * @brief Fast rng taken from here: https://stackoverflow.com/questions/1640258/need-a-fast-random-generator-for-c
  * @return uint64_t 
  */
-uint64_t xorshf96(void) { //period 2^96-1
+inline uint64_t xorshf96(void) { //period 2^96-1
     uint64_t t;
-    
+
     s_X ^= s_X << 16;
     s_X ^= s_X >> 5;
     s_X ^= s_X << 1;

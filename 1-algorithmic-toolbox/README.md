@@ -1,6 +1,6 @@
 # 1. Algorithmic toolbox
 
-Almost every solution for a problem (starting from week-3) has function called `CheckSolution` which will check if solution is correct using predefined testcase and/or obviously correct implementation.
+Almost every solution for a problem (starting from week-3) has a function called `CheckSolution` which will check if the solution is correct using predefined testcase and/or obviously correct implementation.
 
 ## Week 1
 
@@ -50,9 +50,9 @@ Almost every solution for a problem (starting from week-3) has function called `
 
 ## Week 5: Dynamic programming - 1
 
-1. Money change again ❌
-2. Primitive calculator ❌
-3. Edit distance ❌
+1. Money change again ✔️
+2. Primitive calculator ✔️
+3. Edit distance ✔️
 4. Longest common subsequence of two sequences ❌
 5. Longest common subsequence of three sequences ❌
 

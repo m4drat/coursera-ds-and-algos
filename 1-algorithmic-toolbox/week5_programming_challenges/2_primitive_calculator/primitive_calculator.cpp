@@ -75,7 +75,7 @@ bool CheckSolution() {
 
     for (auto& testcase : problemSolutionPairs) {
         auto myAlgoAns = OptimalSequence(testcase.number);
-        if (myAlgoAns.size() != testcase.optimalSequenceLen) {
+        if (myAlgoAns.size() - 1 != testcase.optimalSequenceLen) {
             throw std::runtime_error("Got        : " + std::to_string(myAlgoAns.size()) + ".\n"
                                      "Expected   : " + std::to_string(testcase.optimalSequenceLen) + ".\n"
                                      "On testcase: " + testcase.name + "\n");
@@ -95,15 +95,15 @@ bool CheckSolution() {
 }
 
 int main() {
-    // if (CheckSolution()) {
-    //     std::cout << "The solution is correct!\n";
-    // }
-
-    int32_t n;
-    std::cin >> n;
-    std::vector<int32_t> sequence = OptimalSequence(n);
-    std::cout << sequence.size() - 1 << std::endl;
-    for (size_t i = 0; i < sequence.size(); ++i) {
-        std::cout << sequence[i] << " ";
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
     }
+
+    // int32_t n;
+    // std::cin >> n;
+    // std::vector<int32_t> sequence = OptimalSequence(n);
+    // std::cout << sequence.size() - 1 << std::endl;
+    // for (size_t i = 0; i < sequence.size(); ++i) {
+    //     std::cout << sequence[i] << " ";
+    // }
 }

@@ -1,0 +1,3 @@
+add_subdirectory(1_maximum_amount_of_gold)
+add_subdirectory(2_partitioning_souvenirs)
+add_subdirectory(3_maximum_value_of_an_arithmetic_expression)

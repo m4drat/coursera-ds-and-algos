@@ -53,11 +53,11 @@ Almost every solution for a problem (starting from week-3) has a function called
 1. Money change again ✔️
 2. Primitive calculator ✔️
 3. Edit distance ✔️
-4. Longest common subsequence of two sequences ❌
-5. Longest common subsequence of three sequences ❌
+4. Longest common subsequence of two sequences ✔️
+5. Longest common subsequence of three sequences ✔️
 
 ## Week 6: Dynamic programming - 2
 
-1. Maximum amount of gold ❌
+1. Maximum amount of gold ✔️
 2. Partitioning souvenirs ❌
 3. Maximum value of an arithmetic expression ❌

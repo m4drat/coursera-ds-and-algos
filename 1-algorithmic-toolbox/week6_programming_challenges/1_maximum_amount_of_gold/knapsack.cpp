@@ -88,7 +88,7 @@ bool CheckSolution()
 
     for (auto n : { 1, 15, 40, 70, 82, 99, 113, 222, 256, 300 }) {
         int32_t curWeight = utils::rng::xorshf96() % 10000;
-        auto myAlgoAns = OptimalWeight(curWeight, GenerateRandomWeights(n));
+        auto myAlgoAns = OptimalWeight(curWeight, utils::GenerateRandomVector<int32_t>(n, 0, 1E5));
         std::cout << "Weight: " << curWeight << " "
                   << "Total weights: " << n << " "
                   << "Answer: " << myAlgoAns << std::endl;

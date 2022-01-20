@@ -59,5 +59,5 @@ Almost every solution for a problem (starting from week-3) has a function called
 ## Week 6: Dynamic programming - 2
 
 1. Maximum amount of gold ✔️
-2. Partitioning souvenirs ❌
+2. Partitioning souvenirs ✔️
 3. Maximum value of an arithmetic expression ❌

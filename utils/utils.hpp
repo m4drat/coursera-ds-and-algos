@@ -1,8 +1,10 @@
 #pragma once
 
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <iterator>
+#include <random>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -11,6 +13,23 @@
 #define PROFILE_FUNCTION() PROFILE_SCOPE(__PRETTY_FUNCTION__)
 
 namespace utils {
+
+    template<typename T>
+    std::vector<T> GenerateRandomVector(uint32_t length, T low, T high)
+    {
+        std::vector<T> vec;
+        vec.resize(length);
+
+        std::random_device rand_dev;
+        std::mt19937 generator(rand_dev());
+        std::uniform_int_distribution<T> distr(low, high);
+
+        auto gen = [&distr, &generator]() { return distr(generator); };
+
+        std::generate(std::begin(vec), std::end(vec), gen);
+
+        return vec;
+    }
 
     template<typename T>
     std::string VecToStr(const std::vector<T>& vec)

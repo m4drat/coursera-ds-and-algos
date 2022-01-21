@@ -28,22 +28,6 @@ int32_t OptimalWeight(int32_t capacity, const std::vector<int32_t>& weights)
     return values[weights.size()][capacity];
 }
 
-std::vector<int32_t> GenerateRandomWeights(uint32_t length)
-{
-    std::vector<int32_t> points;
-    points.reserve(length);
-
-    std::random_device rand_dev;
-    std::mt19937 generator(rand_dev());
-    std::uniform_int_distribution<int32_t> distr(0, 1E5);
-
-    for (uint32_t currWeight = 0; currWeight < length; ++currWeight) {
-        points.emplace_back(distr(generator));
-    }
-
-    return points;
-}
-
 bool CheckSolution()
 {
     PROFILE_FUNCTION();

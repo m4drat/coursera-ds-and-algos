@@ -60,4 +60,12 @@ Almost every solution for a problem (starting from week-3) has a function called
 
 1. Maximum amount of gold ✔️
 2. Partitioning souvenirs ✔️
+   - [Subset sum problem](https://en.wikipedia.org/wiki/Subset_sum_problem)
+   - [CMSC 451: Subset Sum & Knapsack](https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/subsetsum.pdf)
+   - [How to solve the partition problem with dynamic programming](https://www.educative.io/edpresso/how-to-solve-the-partition-problem-with-dynamic-programming)
+   - [Partition Problem using Dynamic Programming](https://www.techiedelight.com/partition-problem/)
+   - [Subset Sum Problem – Dynamic Programming Solution](https://www.techiedelight.com/subset-sum-problem/)
+   - [Problem set 1](https://courses.csail.mit.edu/6.890/fall14/psets/ps1-solutions.pdf)
+   - [3 Partition is strongly NP-hard](https://www.youtube.com/watch?v=ZaSMm2xvatw&ab_channel=MITOpenCourseWare)
+   - [K–Partition Problem](https://www.techiedelight.com/k-partition-problem-print-all-subsets/)
 3. Maximum value of an arithmetic expression ❌

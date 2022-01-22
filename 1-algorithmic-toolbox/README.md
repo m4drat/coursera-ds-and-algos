@@ -68,4 +68,5 @@ Almost every solution for a problem (starting from week-3) has a function called
    - [Problem set 1](https://courses.csail.mit.edu/6.890/fall14/psets/ps1-solutions.pdf)
    - [3 Partition is strongly NP-hard](https://www.youtube.com/watch?v=ZaSMm2xvatw&ab_channel=MITOpenCourseWare)
    - [K–Partition Problem](https://www.techiedelight.com/k-partition-problem-print-all-subsets/)
+   - [3 Partition problem](https://discuss.codechef.com/t/three-partition-problem-using-dynamic-programming/72378)
 3. Maximum value of an arithmetic expression ❌

@@ -5,7 +5,7 @@
 
 int32_t OptimalWeight(int32_t capacity, const std::vector<int32_t>& weights)
 {
-    std::vector<std::vector<int32_t>> values(weights.size() + 1,
+    std::vector<std::vector<int32_t>> dpMatrix(weights.size() + 1,
                                              std::vector<int32_t>(capacity + 1));
 
     int32_t currValue = 0;
@@ -16,16 +16,16 @@ int32_t OptimalWeight(int32_t capacity, const std::vector<int32_t>& weights)
             currValue = std::numeric_limits<int32_t>::min();
 
             if (curKnapsackCapacity - weights[curItemIdx - 1] >= 0) {
-                currValue = values[curItemIdx - 1][curKnapsackCapacity - weights[curItemIdx - 1]] +
+                currValue = dpMatrix[curItemIdx - 1][curKnapsackCapacity - weights[curItemIdx - 1]] +
                             weights[curItemIdx - 1];
             }
 
-            values[curItemIdx][curKnapsackCapacity] =
-                std::max(currValue, values[curItemIdx - 1][curKnapsackCapacity]);
+            dpMatrix[curItemIdx][curKnapsackCapacity] =
+                std::max(currValue, dpMatrix[curItemIdx - 1][curKnapsackCapacity]);
         }
     }
 
-    return values[weights.size()][capacity];
+    return dpMatrix[weights.size()][capacity];
 }
 
 bool CheckSolution()

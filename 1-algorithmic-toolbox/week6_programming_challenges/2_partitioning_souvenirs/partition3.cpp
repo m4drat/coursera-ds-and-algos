@@ -9,11 +9,11 @@
 #include "utils.hpp"
 
 bool Partition3Recursive(const std::vector<int32_t>&,
-                            int32_t,
-                            int32_t,
-                            int32_t,
-                            int32_t,
-                            std::unordered_map<std::size_t, bool>);
+                         int32_t,
+                         int32_t,
+                         int32_t,
+                         int32_t,
+                         std::unordered_map<std::size_t, bool>);
 
 bool Partition3SolveRecursive(const std::vector<int32_t>& souvenirs)
 {
@@ -26,25 +26,27 @@ bool Partition3SolveRecursive(const std::vector<int32_t>& souvenirs)
         return false;
     }
 
-    return Partition3Recursive(souvenirs, souvenirs.size() - 1, totalSum / 3, totalSum / 3, totalSum / 3, lookupTable);
+    return Partition3Recursive(
+        souvenirs, souvenirs.size() - 1, totalSum / 3, totalSum / 3, totalSum / 3, lookupTable);
 }
 
 /**
  * @brief Recursive top-down solution for the partition-3 problem.
- * Total complexity of this function is: totalSouvenirs * (sum / 3) ^ 3 => O(totalSouvenirs * sum ^ 3)
+ * Total complexity of this function is: totalSouvenirs * (sum / 3) ^ 3 => O(totalSouvenirs * sum ^
+ * 3)
  */
 bool Partition3Recursive(const std::vector<int32_t>& souvenirs,
-                            int32_t souvenirIdx,
-                            int32_t firstSubsetSum,
-                            int32_t secondSubsetSum,
-                            int32_t thirdSubsetSum,
-                            std::unordered_map<std::size_t, bool> lookupTable)
+                         int32_t souvenirIdx,
+                         int32_t firstSubsetSum,
+                         int32_t secondSubsetSum,
+                         int32_t thirdSubsetSum,
+                         std::unordered_map<std::size_t, bool> lookupTable)
 {
     if (firstSubsetSum == 0 && secondSubsetSum == 0 && secondSubsetSum == 0) {
         return true;
     }
 
-    if (souvenirIdx < 0) { 
+    if (souvenirIdx < 0) {
         return false;
     }
 
@@ -54,17 +56,32 @@ bool Partition3Recursive(const std::vector<int32_t>& souvenirs,
     if (lookupTable.find(hash) == lookupTable.end()) {
         bool res1 = false;
         if (firstSubsetSum - souvenirs[souvenirIdx] >= 0) {
-            res1 = Partition3Recursive(souvenirs, souvenirIdx - 1, firstSubsetSum - souvenirs[souvenirIdx], secondSubsetSum, thirdSubsetSum, lookupTable);
+            res1 = Partition3Recursive(souvenirs,
+                                       souvenirIdx - 1,
+                                       firstSubsetSum - souvenirs[souvenirIdx],
+                                       secondSubsetSum,
+                                       thirdSubsetSum,
+                                       lookupTable);
         }
 
         bool res2 = false;
         if (secondSubsetSum - souvenirs[souvenirIdx] >= 0) {
-            res2 = Partition3Recursive(souvenirs, souvenirIdx - 1, firstSubsetSum, secondSubsetSum - souvenirs[souvenirIdx], thirdSubsetSum, lookupTable);
+            res2 = Partition3Recursive(souvenirs,
+                                       souvenirIdx - 1,
+                                       firstSubsetSum,
+                                       secondSubsetSum - souvenirs[souvenirIdx],
+                                       thirdSubsetSum,
+                                       lookupTable);
         }
 
         bool res3 = false;
         if (thirdSubsetSum - souvenirs[souvenirIdx] >= 0) {
-            res3 = Partition3Recursive(souvenirs, souvenirIdx - 1, firstSubsetSum, secondSubsetSum, thirdSubsetSum - souvenirs[souvenirIdx], lookupTable);
+            res3 = Partition3Recursive(souvenirs,
+                                       souvenirIdx - 1,
+                                       firstSubsetSum,
+                                       secondSubsetSum,
+                                       thirdSubsetSum - souvenirs[souvenirIdx],
+                                       lookupTable);
         }
 
         lookupTable[hash] = res1 || res2 || res3;
@@ -83,7 +100,7 @@ bool Partition3Recursive(const std::vector<int32_t>& souvenirs,
 bool Partition3(const std::vector<int32_t>& souvenirs)
 {
     PROFILE_FUNCTION();
-    
+
     uint32_t totalSum = std::accumulate(souvenirs.begin(), souvenirs.end(), 0);
 
     if (totalSum % 3 != 0)
@@ -190,7 +207,8 @@ bool CheckSolution()
         auto recursiveAnswer = Partition3SolveRecursive(testcase.souvenirs);
         if (myAlgoAns != testcase.answer || myAlgoAns != recursiveAnswer) {
             throw std::runtime_error("Got (Bottom-UP DP): " + std::to_string(myAlgoAns) + ".\n" +
-                                     "Got (Top-down DP) : " + std::to_string(recursiveAnswer) + ".\n"
+                                     "Got (Top-down DP) : " + std::to_string(recursiveAnswer) +
+                                     ".\n"
                                      "Expected   : " +
                                      std::to_string(testcase.answer) +
                                      ".\n"
@@ -208,8 +226,10 @@ bool CheckSolution()
 
         if (myAlgoAns != recursiveAnswer) {
             throw std::runtime_error("Got (Bottom-UP DP): " + std::to_string(myAlgoAns) + ".\n" +
-                                     "Got (Top-down DP) : " + std::to_string(recursiveAnswer) + ".\n"
-                                     "On testcase: " + utils::VecToStr(input) + "\n");
+                                     "Got (Top-down DP) : " + std::to_string(recursiveAnswer) +
+                                     ".\n"
+                                     "On testcase: " +
+                                     utils::VecToStr(input) + "\n");
         }
         // std::cout << "Total souvenirs: " << n << "\n"
         //           << "Answer: " << myAlgoAns << std::endl;

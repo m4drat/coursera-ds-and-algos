@@ -69,4 +69,6 @@ Almost every solution for a problem (starting from week-3) has a function called
    - [3 Partition is strongly NP-hard](https://www.youtube.com/watch?v=ZaSMm2xvatw&ab_channel=MITOpenCourseWare)
    - [K–Partition Problem](https://www.techiedelight.com/k-partition-problem-print-all-subsets/)
    - [3 Partition problem](https://discuss.codechef.com/t/three-partition-problem-using-dynamic-programming/72378)
-3. Maximum value of an arithmetic expression ❌
+3. Maximum value of an arithmetic expression ✔️
+   - [Maximizing an algebraic expression using brackets](https://math.stackexchange.com/questions/580482/maximizing-an-algebraic-expression-using-brackets)
+   - [Placing parentheses analysis](https://courses.csail.mit.edu/6.006/spring09/recitations/DP-problems.pdf)

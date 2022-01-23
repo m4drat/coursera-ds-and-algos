@@ -1,0 +1,5 @@
+add_subdirectory(1_brackets_in_code)
+add_subdirectory(2_tree_height)
+add_subdirectory(3_network_simulation)
+add_subdirectory(4_stack_with_max)
+add_subdirectory(5_max_sliding_window)

@@ -1,7 +1,13 @@
-#include "utils.hpp"
 #include <iostream>
+#include <limits>
 #include <random>
 #include <vector>
+
+#ifdef LOCAL_ENV
+#include "utils.hpp"
+#else
+#define PROFILE_FUNCTION()
+#endif
 
 int32_t OptimalWeight(int32_t capacity, const std::vector<int32_t>& weights)
 {
@@ -29,6 +35,7 @@ int32_t OptimalWeight(int32_t capacity, const std::vector<int32_t>& weights)
     return dpMatrix[weights.size()][capacity];
 }
 
+#ifdef LOCAL_ENV
 bool CheckSolution()
 {
     PROFILE_FUNCTION();
@@ -81,13 +88,15 @@ bool CheckSolution()
 
     return true;
 }
+#endif
 
 int main()
 {
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
-
+#else
     int32_t n, W;
     std::cin >> W >> n;
     std::vector<int32_t> weights(n);
@@ -95,4 +104,5 @@ int main()
         std::cin >> weights[i];
     }
     std::cout << OptimalWeight(W, weights) << '\n';
+#endif
 }

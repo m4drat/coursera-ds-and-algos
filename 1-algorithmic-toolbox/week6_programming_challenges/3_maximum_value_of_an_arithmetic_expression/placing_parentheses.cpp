@@ -3,11 +3,16 @@
 #include <cctype>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <random>
 #include <string>
 #include <vector>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#else
+#define PROFILE_FUNCTION()
+#endif
 
 typedef struct MinMax
 {
@@ -32,41 +37,6 @@ enum class Operation
     MUL,
     LAST
 };
-
-std::string GenerateRandomExpr(uint64_t totalOperations)
-{
-    uint32_t totalExprLength = 2 * totalOperations + 1;
-    std::string expr;
-    expr.reserve(totalExprLength);
-
-    std::random_device rand_dev;
-    std::mt19937 generator(rand_dev());
-    std::uniform_int_distribution<int32_t> distr(0, static_cast<uint32_t>(Operation::LAST) - 1);
-
-    expr.push_back(static_cast<char>(0x30 + utils::rng::xorshf96() % 10));
-
-    for (uint32_t i = 0; i < totalOperations; ++i) {
-        Operation randomOp = static_cast<Operation>(distr(generator));
-
-        switch (randomOp) {
-            case Operation::ADD:
-                expr.push_back('+');
-                break;
-            case Operation::SUB:
-                expr.push_back('-');
-                break;
-            case Operation::MUL:
-                expr.push_back('*');
-                break;
-            default:
-                throw std::runtime_error("Impossible random op!");
-                break;
-        }
-        expr.push_back(static_cast<char>(0x30 + utils::rng::xorshf96() % 10));
-    }
-
-    return expr;
-}
 
 inline int64_t AsciiToInt(char num)
 {
@@ -145,6 +115,42 @@ int64_t GetMaximumValue(const std::string& expr)
     return dpMatrix[0].back().max;
 }
 
+#ifdef LOCAL_ENV
+std::string GenerateRandomExpr(uint64_t totalOperations)
+{
+    uint32_t totalExprLength = 2 * totalOperations + 1;
+    std::string expr;
+    expr.reserve(totalExprLength);
+
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
+    std::uniform_int_distribution<int32_t> distr(0, static_cast<uint32_t>(Operation::LAST) - 1);
+
+    expr.push_back(static_cast<char>(0x30 + utils::rng::xorshf96() % 10));
+
+    for (uint32_t i = 0; i < totalOperations; ++i) {
+        Operation randomOp = static_cast<Operation>(distr(generator));
+
+        switch (randomOp) {
+            case Operation::ADD:
+                expr.push_back('+');
+                break;
+            case Operation::SUB:
+                expr.push_back('-');
+                break;
+            case Operation::MUL:
+                expr.push_back('*');
+                break;
+            default:
+                throw std::runtime_error("Impossible random op!");
+                break;
+        }
+        expr.push_back(static_cast<char>(0x30 + utils::rng::xorshf96() % 10));
+    }
+
+    return expr;
+}
+
 bool CheckSolution()
 {
     struct ProblemStatement
@@ -184,14 +190,17 @@ bool CheckSolution()
 
     return true;
 }
+#endif
 
 int main()
 {
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
-
-    // std::string s;
-    // std::cin >> s;
-    // std::cout << GetMaximumValue(s) << '\n';
+#else
+    std::string s;
+    std::cin >> s;
+    std::cout << GetMaximumValue(s) << '\n';
+#endif
 }

@@ -1,21 +1,18 @@
-#include <iostream>
-#include <vector>
-#include <numeric>
 #include <cassert>
 #include <cmath>
+#include <iostream>
+#include <numeric>
+#include <vector>
 
-std::vector<int32_t> OptimalSummands(int32_t candiesCount) {
-    auto solveForCandies = [](int32_t n) -> float {
-        return (-1 + std::sqrt(1 + 8 * n)) / 2.0f;
-    };
+std::vector<int32_t> OptimalSummands(int32_t candiesCount)
+{
+    auto solveForCandies = [](int32_t n) -> float { return (-1 + std::sqrt(1 + 8 * n)) / 2.0f; };
 
-    auto nSum = [](int32_t n) -> float {
-        return (n * (n + 1)) / 2.0f;
-    };
+    auto nSum = [](int32_t n) -> float { return (n * (n + 1)) / 2.0f; };
 
     float upperBound = solveForCandies(candiesCount);
 
-    std::vector<int32_t> summands { };
+    std::vector<int32_t> summands{};
 
     // The candies count is a perfect number
     if (std::floor(upperBound) == upperBound) {
@@ -32,7 +29,8 @@ std::vector<int32_t> OptimalSummands(int32_t candiesCount) {
     return summands;
 }
 
-std::vector<int> CorrectSolution(int n) {
+std::vector<int> CorrectSolution(int n)
+{
     // using the algorithm described in the pdf
     std::vector<int> summands;
     for (int k = n, l = 1; k > 0; l++) {
@@ -47,17 +45,20 @@ std::vector<int> CorrectSolution(int n) {
     return summands;
 }
 
-void CheckSolution() {
-    struct ProblemStatement {
+#ifdef LOCAL_ENV
+bool CheckSolution()
+{
+    struct ProblemStatement
+    {
         std::vector<int32_t> summands;
         int32_t candiesCount;
     };
 
-    std::vector<ProblemStatement> problemSolutionPairs {
-        ProblemStatement{ .summands = { 1, 2, 3 }, .candiesCount{ 6 }},
-        ProblemStatement{ .summands = { 1, 2, 5 }, .candiesCount{ 8 }},
-        ProblemStatement{ .summands = { 1 }, .candiesCount{ 1 }},
-        ProblemStatement{ .summands = { 2 }, .candiesCount{ 2 }}
+    std::vector<ProblemStatement> problemSolutionPairs{
+        ProblemStatement{ .summands = { 1, 2, 3 }, .candiesCount = 6 },
+        ProblemStatement{ .summands = { 1, 2, 5 }, .candiesCount = 8 },
+        ProblemStatement{ .summands = { 1 }, .candiesCount = 1 },
+        ProblemStatement{ .summands = { 2 }, .candiesCount = 2 }
     };
 
     for (auto& testcase : problemSolutionPairs) {
@@ -74,9 +75,18 @@ void CheckSolution() {
             throw std::runtime_error("Incorrect answer!");
         }
     }
-}
 
-int main() {
+    return true;
+}
+#endif
+
+int main()
+{
+#ifdef LOCAL_ENV
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
+    }
+#else
     int32_t n;
     std::cin >> n;
     std::vector<int32_t> summands = std::move(CorrectSolution(n));
@@ -84,6 +94,5 @@ int main() {
     for (size_t i = 0; i < summands.size(); ++i) {
         std::cout << summands[i] << ' ';
     }
-
-    CheckSolution();
+#endif
 }

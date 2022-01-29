@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -49,6 +50,7 @@ int32_t EditDistance(const std::string& str1, const std::string& str2)
     return dpMat[str1.length()][str2.length()];
 }
 
+#ifdef LOCAL_ENV
 bool CheckSolution()
 {
     struct ProblemStatement
@@ -97,16 +99,19 @@ bool CheckSolution()
 
     return true;
 }
+#endif
 
 int main()
 {
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
-
+#else
     std::string str1;
     std::string str2;
     std::cin >> str1 >> str2;
     std::cout << EditDistance(str1, str2) << std::endl;
     return 0;
+#endif
 }

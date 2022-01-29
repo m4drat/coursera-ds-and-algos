@@ -2,7 +2,9 @@
 #include <vector>
 #include <cassert>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#endif
 
 uint32_t Merge(std::vector<uint32_t>& arrayToSort, uint32_t left, uint32_t midpoint, uint32_t right) {
     std::vector<uint32_t> leftPart{ std::next(arrayToSort.begin(), left), std::next(arrayToSort.begin(), midpoint + 1) };
@@ -57,11 +59,11 @@ uint64_t GetNumberOfInversionsAndSort(std::vector<uint32_t>& arrayToSort, uint32
 
     numberOfInversions += Merge(arrayToSort, left, midpoint, right);
 
-    //write your code here
     return numberOfInversions;
 }
 
-void CheckSolution() {
+#ifdef LOCAL_ENV
+bool CheckSolution() {
     struct ProblemStatement {
         std::vector<uint32_t> array;
         uint32_t answer;
@@ -86,6 +88,7 @@ void CheckSolution() {
         ProblemStatement{ .array{ 2, 1, 1 }, .answer = 2 },
         ProblemStatement{ .array{ 1, 2, 1 }, .answer = 1 },
         ProblemStatement{ .array{ 3, 2, 1 }, .answer = 3 },
+        ProblemStatement{ .array{ 2, 3, 9, 2, 2 }, .answer = 2 }
     };
 
     for (auto& testcase : problemSolutionPairs) {
@@ -97,16 +100,23 @@ void CheckSolution() {
                                      "On testcase: " + utils::VecToStr(temp) + "\n");
         }
     }
+
+    return true;
 }
+#endif
 
 int main() {
-    CheckSolution();
-
-    // uint32_t n;
-    // std::cin >> n;
-    // std::vector<uint32_t> array(n);
-    // for (uint32_t i = 0; i < array.size(); i++) {
-    //     std::cin >> array[i];
-    // }
-    // std::cout << GetNumberOfInversionsAndSort(array, 0, array.size()) << '\n';
+#ifdef LOCAL_ENV
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
+    }
+#else
+    uint32_t n;
+    std::cin >> n;
+    std::vector<uint32_t> array(n);
+    for (uint32_t i = 0; i < array.size(); i++) {
+        std::cin >> array[i];
+    }
+    std::cout << GetNumberOfInversionsAndSort(array, 0, array.size() - 1) << '\n';
+#endif
 }

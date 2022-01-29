@@ -3,7 +3,9 @@
 #include <vector>
 #include <cmath>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#endif
 
 constexpr int32_t NO_MAJORITY_ELEMENT{ -1 };
 
@@ -12,7 +14,7 @@ constexpr int32_t NO_MAJORITY_ELEMENT{ -1 };
  * Great article: http://users.ece.northwestern.edu/~dda902/336/hw4-sol.pdf
  */
 
-uint32_t Count(const std::vector<uint32_t>& array, uint32_t key, uint32_t start, uint32_t end) {
+int32_t Count(const std::vector<int32_t>& array, uint32_t key, uint32_t start, uint32_t end) {
     return std::count_if(
         std::next(array.begin(), start), 
         std::next(array.begin(), end + 1), 
@@ -22,7 +24,7 @@ uint32_t Count(const std::vector<uint32_t>& array, uint32_t key, uint32_t start,
     );
 }
 
-int32_t GetMajorityElement(std::vector<uint32_t>& array, int32_t left, int32_t right) {
+int32_t GetMajorityElement(std::vector<int32_t>& array, int32_t left, int32_t right) {
     // Exit condition
     if (left == right) return array[left];
 
@@ -61,55 +63,64 @@ int32_t GetMajorityElementCorrect(std::vector<int32_t>& array) {
         if (count > array.size() / 2) return curElem;
     }
 
-    return -1;
+    return NO_MAJORITY_ELEMENT;
 }
 
-void CheckSolution() {
+#ifdef LOCAL_ENV
+bool CheckSolution() {
     struct ProblemStatement {
-        std::vector<uint32_t> array;
+        std::vector<int32_t> array;
         int32_t answer;
     };
 
     std::vector<ProblemStatement> problemSolutionPairs {
-        ProblemStatement{ .array{ 1, 1, 1, 3 }, .answer{ 1 }},
-        ProblemStatement{ .array{ 2, 3, 9, 2, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 1, 2, 3, 4 }, .answer{ -1 }},
-        ProblemStatement{ .array{ 2, 2, 3, 4 }, .answer{ -1 }},
-        ProblemStatement{ .array{ 2, 2, 1, 3, 4 }, .answer{ -1 }},
-        ProblemStatement{ .array{ 1 }, .answer{ 1 }},
-        ProblemStatement{ .array{ 1, 1 }, .answer{ 1 }},
-        ProblemStatement{ .array{ 1, 2 }, .answer{ -1 }},
-        ProblemStatement{ .array{ 1, 2, 3 }, .answer{ -1 }},
-        ProblemStatement{ .array{ 1, 2, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 2, 1, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 2, 2, 1 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 2, 2, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 2, 2, 2, 3, 1, 0, 2, 4, 2, 2, 7, 2, 9, 1, 2, 2, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 2, 2, 2, 3, 1, 0, 2, 4, 2, 2, 7, 2, 9, 1, 2, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 1, 2, 1, 2, 1 }, .answer{ 1 }},
-        ProblemStatement{ .array{ 2, 1, 2, 1, 2, 1, 2 }, .answer{ 2 }},
-        ProblemStatement{ .array{ 0 }, .answer{ 0 }},
+        ProblemStatement{ .array{ 2, 3, 9, 2, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 1, 1, 1, 3 }, .answer = 1 },
+        ProblemStatement{ .array{ 2, 3, 9, 2, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 1, 2, 3, 4 }, .answer = -1 },
+        ProblemStatement{ .array{ 2, 2, 3, 4 }, .answer = -1 },
+        ProblemStatement{ .array{ 2, 2, 1, 3, 4 }, .answer = -1 },
+        ProblemStatement{ .array{ 1 }, .answer = 1 },
+        ProblemStatement{ .array{ 1, 1 }, .answer = 1 },
+        ProblemStatement{ .array{ 1, 2 }, .answer = -1 },
+        ProblemStatement{ .array{ 1, 2, 3 }, .answer = -1 },
+        ProblemStatement{ .array{ 1, 2, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 2, 1, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 2, 2, 1 }, .answer = 2 },
+        ProblemStatement{ .array{ 2, 2, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 2, 2, 2, 3, 1, 0, 2, 4, 2, 2, 7, 2, 9, 1, 2, 2, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 2, 2, 2, 3, 1, 0, 2, 4, 2, 2, 7, 2, 9, 1, 2, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 1, 2, 1, 2, 1 }, .answer = 1 },
+        ProblemStatement{ .array{ 2, 1, 2, 1, 2, 1, 2 }, .answer = 2 },
+        ProblemStatement{ .array{ 0 }, .answer = 0 }
     };
 
     for (auto& testcase : problemSolutionPairs) {
         int32_t myAlgoAns = GetMajorityElement(testcase.array, 0, testcase.array.size() - 1);
-        // int32_t correctAns = GetMajorityElementCorrect(testcase.array);
+        int32_t correctAns = GetMajorityElementCorrect(testcase.array);
         if (myAlgoAns != testcase.answer) {
             throw std::runtime_error("Got: " + std::to_string(myAlgoAns) + ". Expected: " + std::to_string(testcase.answer) + ". Testcase: " + utils::VecToStr(testcase.array));
         }
     }
+
+    return true;
 }
+#endif
 
 int32_t main() {
-    // int32_t n;
-    // std::cin >> n;
-    // std::vector<int32_t> array(n);
+#ifdef LOCAL_ENV
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
+    }
+#else
+    int32_t n;
+    std::cin >> n;
+    std::vector<int32_t> array(n);
 
-    // for (size_t i = 0; i < array.size(); ++i) {
-    //     std::cin >> array[i];
-    // }
+    for (size_t i = 0; i < array.size(); ++i) {
+        std::cin >> array[i];
+    }
 
-    // std::cout << (GetMajorityElement(array, 0, array.size()) != -1) << '\n';
-
-    CheckSolution();
+    std::cout << (GetMajorityElement(array, 0, array.size() - 1) != NO_MAJORITY_ELEMENT) << '\n';
+#endif
 }

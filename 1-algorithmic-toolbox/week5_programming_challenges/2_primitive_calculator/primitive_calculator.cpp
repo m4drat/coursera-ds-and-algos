@@ -1,12 +1,14 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
+#include <limits>
+#include <vector>
 
-std::vector<int32_t> OptimalSequence(int32_t number) {
+std::vector<int32_t> OptimalSequence(int32_t number)
+{
     std::vector<int32_t> minOperations(number + 1);
-    
+
     for (int32_t curNum = 2; curNum <= number; ++curNum) {
-        int32_t curMin = std::numeric_limits<int32_t>::max();        
+        int32_t curMin = std::numeric_limits<int32_t>::max();
 
         if (curNum % 2 == 0 && minOperations[curNum / 2] + 1 < curMin) {
             curMin = minOperations[curNum / 2] + 1;
@@ -22,14 +24,14 @@ std::vector<int32_t> OptimalSequence(int32_t number) {
 
         minOperations[curNum] = curMin;
     }
-    
-    std::vector<int32_t> sequence {};
+
+    std::vector<int32_t> sequence{};
     sequence.reserve(minOperations[number]);
     sequence.push_back(number);
 
     // Reconstruct optimal solution
-    for (int32_t curNum = number; curNum > 1; ) {
-        int32_t curMin = std::numeric_limits<int32_t>::max();        
+    for (int32_t curNum = number; curNum > 1;) {
+        int32_t curMin = std::numeric_limits<int32_t>::max();
         int32_t curNumCopy = curNum;
 
         sequence.push_back(curNum);
@@ -60,14 +62,17 @@ std::vector<int32_t> OptimalSequence(int32_t number) {
     return sequence;
 }
 
-bool CheckSolution() {
-    struct ProblemStatement {
+#ifdef LOCAL_ENV
+bool CheckSolution()
+{
+    struct ProblemStatement
+    {
         int32_t number;
         int32_t optimalSequenceLen;
         std::string name;
     };
 
-    std::vector<ProblemStatement> problemSolutionPairs {
+    std::vector<ProblemStatement> problemSolutionPairs{
         ProblemStatement{ .number = 1, .optimalSequenceLen = 0, .name{ "1 - testcase" } },
         ProblemStatement{ .number = 5, .optimalSequenceLen = 3, .name{ "2 - testcase" } },
         ProblemStatement{ .number = 96234, .optimalSequenceLen = 14, .name{ "3 - testcase" } },
@@ -76,9 +81,13 @@ bool CheckSolution() {
     for (auto& testcase : problemSolutionPairs) {
         auto myAlgoAns = OptimalSequence(testcase.number);
         if (myAlgoAns.size() - 1 != testcase.optimalSequenceLen) {
-            throw std::runtime_error("Got        : " + std::to_string(myAlgoAns.size()) + ".\n"
-                                     "Expected   : " + std::to_string(testcase.optimalSequenceLen) + ".\n"
-                                     "On testcase: " + testcase.name + "\n");
+            throw std::runtime_error("Got        : " + std::to_string(myAlgoAns.size()) +
+                                     ".\n"
+                                     "Expected   : " +
+                                     std::to_string(testcase.optimalSequenceLen) +
+                                     ".\n"
+                                     "On testcase: " +
+                                     testcase.name + "\n");
         }
     }
 
@@ -93,17 +102,21 @@ bool CheckSolution() {
 
     return true;
 }
+#endif
 
-int main() {
+int main()
+{
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
-
-    // int32_t n;
-    // std::cin >> n;
-    // std::vector<int32_t> sequence = OptimalSequence(n);
-    // std::cout << sequence.size() - 1 << std::endl;
-    // for (size_t i = 0; i < sequence.size(); ++i) {
-    //     std::cout << sequence[i] << " ";
-    // }
+#else
+    int32_t n;
+    std::cin >> n;
+    std::vector<int32_t> sequence = OptimalSequence(n);
+    std::cout << sequence.size() - 1 << std::endl;
+    for (size_t i = 0; i < sequence.size(); ++i) {
+        std::cout << sequence[i] << " ";
+    }
+#endif
 }

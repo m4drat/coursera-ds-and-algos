@@ -9,7 +9,11 @@
 #include <cassert>
 #include <limits>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#else
+#define PROFILE_FUNCTION()
+#endif
 
 constexpr int32_t c_MaxCoord{  1'000'000'000 };
 constexpr int32_t c_MinCoord{ -1'000'000'000 };
@@ -284,6 +288,7 @@ double MinimalDistanceSlow(const std::vector<int32_t>& pointsX, const std::vecto
     return minDistance;
 }
 
+#ifdef LOCAL_ENV
 std::pair<std::vector<int32_t>, std::vector<int32_t>> GenerateRandomPoints(uint32_t length) {
     std::vector<int32_t> pointsX;
     std::vector<int32_t> pointsY;
@@ -305,7 +310,7 @@ std::pair<std::vector<int32_t>, std::vector<int32_t>> GenerateRandomPoints(uint3
     return std::move(std::make_pair(pointsX, pointsY));
 }
 
-void CheckSolution() {
+bool CheckSolution() {
     struct ProblemStatement {
         std::vector<int32_t> pointsX;
         std::vector<int32_t> pointsY;
@@ -348,18 +353,26 @@ void CheckSolution() {
                                      "Testcase size: " + std::to_string(n) + ".\n");
         }
     }
+
+    return true;
 }
+#endif
 
 int main() {
-    CheckSolution();
-    // size_t n;
-    // std::cin >> n;
-    // std::vector<int32_t> pointsX(n);
-    // std::vector<int32_t> pointsY(n);
-    // for (size_t i = 0; i < n; i++) {
-    //   std::cin >> pointsX[i] >> pointsY[i];
-    // }
+#ifdef LOCAL_ENV
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
+    }
+#else
+    size_t n;
+    std::cin >> n;
+    std::vector<int32_t> pointsX(n);
+    std::vector<int32_t> pointsY(n);
+    for (size_t i = 0; i < n; i++) {
+      std::cin >> pointsX[i] >> pointsY[i];
+    }
 
-    // std::cout << std::fixed;
-    // std::cout << std::setprecision(9) << MinimalDistance(pointsX, pointsY) << "\n";
+    std::cout << std::fixed;
+    std::cout << std::setprecision(9) << MinimalDistanceFast(pointsX, pointsY) << "\n";
+#endif
 }

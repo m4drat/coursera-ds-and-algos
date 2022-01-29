@@ -4,7 +4,11 @@
 #include <random>
 #include <vector>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#else
+#define PROFILE_FUNCTION()
+#endif
 
 constexpr int32_t c_MaxCoord{ 100'000'000 };
 constexpr int32_t c_MinCoord{ -100'000'000 };
@@ -58,8 +62,6 @@ std::vector<int32_t> CountSegmentsSlow(std::vector<int32_t>& starts,
 
 std::pair<std::vector<int32_t>, std::vector<int32_t>> GenerateRandomSegments(uint32_t length)
 {
-    PROFILE_FUNCTION();
-
     std::vector<int32_t> starts;
     std::vector<int32_t> ends;
     starts.reserve(length);
@@ -84,7 +86,8 @@ std::pair<std::vector<int32_t>, std::vector<int32_t>> GenerateRandomSegments(uin
     return std::move(std::make_pair(starts, ends));
 }
 
-void CheckSolution()
+#ifdef LOCAL_ENV
+bool CheckSolution()
 {
     struct ProblemStatement
     {
@@ -185,25 +188,32 @@ void CheckSolution()
                                      utils::VecToStr(correctAnswer) + ".\n");
         }
     }
+
+    return true;
 }
+#endif
 
 int32_t main()
 {
-    CheckSolution();
+#ifdef LOCAL_ENV
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
+    }
+#else
+    int32_t n, m;
+    std::cin >> n >> m;
+    std::vector<int32_t> starts(n), ends(n);
+    for (size_t i = 0; i < starts.size(); i++) {
+        std::cin >> starts[i] >> ends[i];
+    }
+    std::vector<int32_t> points(m);
+    for (size_t i = 0; i < points.size(); i++) {
+        std::cin >> points[i];
+    }
 
-    // int32_t n, m;
-    // std::cin >> n >> m;
-    // std::vector<int32_t> starts(n), ends(n);
-    // for (size_t i = 0; i < starts.size(); i++) {
-    //     std::cin >> starts[i] >> ends[i];
-    // }
-    // std::vector<int32_t> points(m);
-    // for (size_t i = 0; i < points.size(); i++) {
-    //     std::cin >> points[i];
-    // }
-
-    // std::vector<int32_t> cnt = CountSegmentsSlow(starts, ends, points);
-    // for (size_t i = 0; i < cnt.size(); i++) {
-    //     std::cout << cnt[i] << ' ';
-    // }
+    std::vector<int32_t> cnt = CountSegmentsFast(starts, ends, points);
+    for (size_t i = 0; i < cnt.size(); i++) {
+        std::cout << cnt[i] << ' ';
+    }
+#endif
 }

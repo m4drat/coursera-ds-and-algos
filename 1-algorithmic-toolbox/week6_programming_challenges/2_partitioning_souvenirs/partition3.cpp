@@ -1,12 +1,17 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <numeric>
 #include <unordered_map>
 #include <vector>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#else
+#define PROFILE_FUNCTION()
+#endif
 
 bool Partition3Recursive(const std::vector<int32_t>&,
                          int32_t,
@@ -177,6 +182,7 @@ bool IsSubsetSum(const std::vector<int32_t>& set, uint32_t targetSum)
     return matrix[set.size()][targetSum];
 }
 
+#ifdef LOCAL_ENV
 bool CheckSolution()
 {
     struct ProblemStatement
@@ -237,26 +243,21 @@ bool CheckSolution()
 
     return true;
 }
+#endif
 
 int main()
 {
-    // std::cout << IsSubsetSum({1, 2, 3}, 1) << std::endl;
-    // std::cout << IsSubsetSum({2, 2, 3}, 1) << std::endl;
-    // std::cout << IsSubsetSum({2, 2, 3}, 5) << std::endl;
-    // std::cout << IsSubsetSum({1, 9, 4, 4, 20, 6, 1, 6, 8, 0, 1, 6, 9, 2, 6, 4, 8, 9, 1, 6, 3, 7,
-    // 9, 5, 5, 4, 8, 9, 2, 6, 3, 3, 4, 6}, 59) << std::endl; std::cout << IsSubsetSum({1, 9, 4, 4,
-    // 20, 6, 1, 6, 8, 0, 1, 6, 9, 2, 6, 4, 8, 9, 1, 6, 3, 7, 9, 5, 5, 4, 8, 9, 2, 6, 3, 3, 4, 6},
-    // 50) << std::endl; std::cout << IsSubsetSum({1, 9, 4, 4, 20, 6, 1, 6, 8, 0, 1, 6, 9, 2, 6, 4,
-    // 8, 9, 1, 6, 3, 7, 9, 5, 5, 4, 8, 9, 2, 6, 3, 3, 4, 6}, 36) << std::endl;
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
-
-    // int32_t n;
-    // std::cin >> n;
-    // std::vector<int32_t> A(n);
-    // for (size_t i = 0; i < A.size(); ++i) {
-    //     std::cin >> A[i];
-    // }
-    // std::cout << Partition3(std::move(A)) << '\n';
+#else
+    int32_t n;
+    std::cin >> n;
+    std::vector<int32_t> A(n);
+    for (size_t i = 0; i < A.size(); ++i) {
+        std::cin >> A[i];
+    }
+    std::cout << Partition3(std::move(A)) << '\n';
+#endif
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <vector>
 
 int32_t LongestCommonSubsequence2(std::vector<int32_t>& a, std::vector<int32_t>& b)
@@ -26,6 +27,7 @@ int32_t LongestCommonSubsequence2(std::vector<int32_t>& a, std::vector<int32_t>&
     return dpMatrix[a.size()][b.size()];
 }
 
+#ifdef LOCAL_ENV
 bool CheckSolution()
 {
     struct ProblemStatement
@@ -62,13 +64,15 @@ bool CheckSolution()
 
     return true;
 }
+#endif
 
 int32_t main()
 {
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
-
+#else
     std::size_t n;
     std::cin >> n;
     std::vector<int32_t> a(n);
@@ -84,4 +88,5 @@ int32_t main()
     }
 
     std::cout << LongestCommonSubsequence2(a, b) << std::endl;
+#endif
 }

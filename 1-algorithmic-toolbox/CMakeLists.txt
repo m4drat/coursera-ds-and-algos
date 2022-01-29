@@ -1,6 +1,6 @@
 # add_subdirectory("week1_programming_challenges")
 # add_subdirectory("week2_programming_challenges")
 # add_subdirectory("week3_programming_challenges")
-# add_subdirectory("week4_programming_challenges")
+add_subdirectory("week4_programming_challenges")
 # add_subdirectory("week5_programming_challenges")
-add_subdirectory("week6_programming_challenges")
+# add_subdirectory("week6_programming_challenges")

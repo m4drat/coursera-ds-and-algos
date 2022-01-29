@@ -3,7 +3,9 @@
 #include <vector>
 #include <cstdlib>
 
+#ifdef LOCAL_ENV
 #include "utils.hpp"
+#endif
 
 struct Segment {
     int32_t start;
@@ -23,7 +25,7 @@ struct Segment {
  * @param pivotElem 
  * @return Segment 
  */
-Segment RandomPartition3(std::vector<int32_t>& array, int32_t left, int32_t right, int32_t pivotElem) {
+Segment RandomPartition3(std::vector<uint32_t>& array, int32_t left, int32_t right, int32_t pivotElem) {
     for (uint32_t i = left; i <= right; i++) {
         if (array[i] < pivotElem) {
             std::swap(array[left++], array[i]);
@@ -37,7 +39,7 @@ Segment RandomPartition3(std::vector<int32_t>& array, int32_t left, int32_t righ
     return { .start = left, .end = right };
 }
 
-void RandomizedQuickSort(std::vector<int32_t>& array, int32_t left, int32_t right) {
+void RandomizedQuickSort(std::vector<uint32_t>& array, int32_t left, int32_t right) {
     if (left >= right) {
         return;
     }
@@ -51,10 +53,11 @@ void RandomizedQuickSort(std::vector<int32_t>& array, int32_t left, int32_t righ
     RandomizedQuickSort(array, sortedRange.end + 1, right);
 }
 
-void CheckSolution() {
+#ifdef LOCAL_ENV
+bool CheckSolution() {
     struct ProblemStatement {
-        std::vector<int32_t> array;
-        std::vector<int32_t> answer;
+        std::vector<uint32_t> array;
+        std::vector<uint32_t> answer;
     };
 
     std::vector<ProblemStatement> problemSolutionPairs {
@@ -81,20 +84,27 @@ void CheckSolution() {
             throw std::runtime_error("Got: " + utils::VecToStr(testcase.array) + ". Expected: " + utils::VecToStr(testcase.answer));
         }
     }
+
+    return true;
 }
+#endif
 
 int main() {
-    // uint32_t n;
-    // std::cin >> n;
-    // std::vector<uint32_t> array(n);
-    // for (size_t i = 0; i < array.size(); ++i) {
-    //     std::cin >> array[i];
-    // }
-    // RandomizedQuickSort(array, 0, array.size() - 1);
+#ifdef LOCAL_ENV
+    if (CheckSolution()) {
+        std::cout << "The solution is correct!\n";
+    }
+#else
+    uint32_t n;
+    std::cin >> n;
+    std::vector<uint32_t> array(n);
+    for (size_t i = 0; i < array.size(); ++i) {
+        std::cin >> array[i];
+    }
+    RandomizedQuickSort(array, 0, array.size() - 1);
 
-    // for (size_t i = 0; i < array.size(); ++i) {
-    //     std::cout << array[i] << ' ';
-    // }
-
-    CheckSolution();
+    for (size_t i = 0; i < array.size(); ++i) {
+        std::cout << array[i] << ' ';
+    }
+#endif
 }

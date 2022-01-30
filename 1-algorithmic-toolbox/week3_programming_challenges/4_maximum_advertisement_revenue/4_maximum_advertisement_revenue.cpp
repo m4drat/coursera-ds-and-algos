@@ -25,12 +25,12 @@ bool CheckSolution()
     };
 
     std::vector<ProblemStatement> problemSolutionPairs{
-        ProblemStatement{ .firstSequence = { 23 }, .secondSequence{ 39 }, .answer{ 897 } },
+        ProblemStatement{ .firstSequence = { 23 }, .secondSequence{ 39 }, .answer = 897 },
         ProblemStatement{
-            .firstSequence = { 1, 3, -5 }, .secondSequence{ -2, 4, 1 }, .answer{ 23 } },
-        ProblemStatement{ .firstSequence = { 1 }, .secondSequence{ -2, -1 }, .answer{ -1 } },
+            .firstSequence = { 1, 3, -5 }, .secondSequence{ -2, 4, 1 }, .answer = 23 },
+        ProblemStatement{ .firstSequence = { 1 }, .secondSequence{ -2, -1 }, .answer = -1 },
         ProblemStatement{
-            .firstSequence = { 4, 0, 3, -7, -1, -5 }, .secondSequence{ 7, -1 }, .answer{ 28 } },
+            .firstSequence = { 4, 0, 3, -7, -1, -5 }, .secondSequence{ 7, -1 }, .answer = 28 },
     };
 
     for (auto& testcase : problemSolutionPairs) {

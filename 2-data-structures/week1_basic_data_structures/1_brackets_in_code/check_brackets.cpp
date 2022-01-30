@@ -30,7 +30,7 @@ struct Bracket
  * @brief Checks whether the given string is balanced or not.
  * Returns empty optional if every
  */
-std::optional<uint32_t> IsBalanced(const std::string& str)
+std::string IsBalanced(const std::string& str)
 {
     std::stack<Bracket> stack;
     for (uint32_t i = 0; i < str.length(); i++) {
@@ -46,7 +46,7 @@ std::optional<uint32_t> IsBalanced(const std::string& str)
             // If stack is empty it means, that we don't have matching bracket
             // Print out current unmatched closing bracket position
             if (stack.empty())
-                return std::optional<uint32_t>(i + 1);
+                return std::to_string(i + 1);
 
             Bracket top = stack.top();
             stack.pop();
@@ -54,16 +54,17 @@ std::optional<uint32_t> IsBalanced(const std::string& str)
             // If Our current bracket is not matched with the last saved on stack
             // Write out current unmatched bracket position
             if (!top.Matchc(ch))
-                return std::optional<uint32_t>(i + 1);
+                return std::to_string(i + 1);
         }
     }
 
     // If the stack is empty it means that all brackets are processed and the string is correctly
     // balanced Otherwise, extract last unmatched opening bracket from the stack, and print its
     // position
-    return (stack.empty()) ? std::nullopt : std::optional<uint32_t>(stack.top().position + 1);
+    return (stack.empty()) ? "Success" : std::to_string(stack.top().position + 1);
 }
 
+#ifdef LOCAL_ENV
 bool CheckSolution()
 {
     struct ProblemStatement
@@ -90,15 +91,8 @@ bool CheckSolution()
 
     for (auto& testcase : problemSolutionPairs) {
         auto myAlgoAns = IsBalanced(testcase.input);
-        std::string result;
-        if (myAlgoAns.has_value()) {
-            result = std::to_string(myAlgoAns.value());
-        } else {
-            result = "Success";
-        }
-
-        if (result != testcase.answer) {
-            throw std::runtime_error("Got        : " + result +
+        if (myAlgoAns != testcase.answer) {
+            throw std::runtime_error("Got        : " + myAlgoAns +
                                      ".\n"
                                      "Expected   : " +
                                      testcase.answer +
@@ -110,15 +104,20 @@ bool CheckSolution()
 
     return true;
 }
+#endif
 
 int main()
 {
+#ifdef LOCAL_ENV
     if (CheckSolution()) {
         std::cout << "The solution is correct!\n";
     }
+#else
+    std::string text;
+    getline(std::cin, text);
 
-    // std::string text;
-    // getline(std::cin, text);
-
+    auto answer = IsBalanced(text);
+    std::cout << answer << std::endl;
+#endif
     return 0;
 }

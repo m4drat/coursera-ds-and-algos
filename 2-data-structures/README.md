@@ -7,7 +7,8 @@
     - [Find tree height in O(n)](http://mishadoff.com/blog/dfs-on-binary-tree-array/)
 3. network simulation ✔️
 4. stack with max ✔️
-5. max sliding window ❌
+5. max sliding window ✔️
+    - [Performance analysis](https://codinghelmet.com/exercises/finding-maximum-value-in-queue)
 
 ## Week 2: Priority queues and disjoint sets
 

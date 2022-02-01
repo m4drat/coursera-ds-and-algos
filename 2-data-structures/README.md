@@ -3,10 +3,10 @@
 ## Week 1: Basic data structures
 
 1. brackets in code ✔️
-2. tree height ❌
+2. tree height ✔️
     - [Find tree height in O(n)](http://mishadoff.com/blog/dfs-on-binary-tree-array/)
-3. network simulation ❌
-4. stack with max ❌
+3. network simulation ✔️
+4. stack with max ✔️
 5. max sliding window ❌
 
 ## Week 2: Priority queues and disjoint sets

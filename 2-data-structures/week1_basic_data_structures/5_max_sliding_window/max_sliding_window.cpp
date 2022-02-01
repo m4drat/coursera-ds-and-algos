@@ -1,37 +1,38 @@
 #include <iostream>
 #include <vector>
 
-using std::cin;
-using std::cout;
-using std::max;
-using std::vector;
-
-void max_sliding_window_naive(vector<int> const& A, int w)
+void MaxSlidingWindowNaive(std::vector<int32_t> const& A, int32_t w)
 {
     for (size_t i = 0; i < A.size() - w + 1; ++i) {
-        int window_max = A.at(i);
+        int32_t window_max = A.at(i);
         for (size_t j = i + 1; j < i + w; ++j)
-            window_max = max(window_max, A.at(j));
+            window_max = std::max(window_max, A.at(j));
 
-        cout << window_max << " ";
+        std::cout << window_max << " ";
     }
 
     return;
 }
 
-int main()
+void MaxSlidingWindow(std::vector<int32_t> const& array, int32_t m)
 {
-    int n = 0;
-    cin >> n;
 
-    vector<int> A(n);
+    return;
+}
+
+int32_t main()
+{
+    int32_t n = 0;
+    std::cin >> n;
+
+    std::vector<int32_t> A(n);
     for (size_t i = 0; i < n; ++i)
-        cin >> A.at(i);
+        std::cin >> A.at(i);
 
-    int w = 0;
-    cin >> w;
+    int32_t m = 0;
+    std::cin >> m;
 
-    max_sliding_window_naive(A, w);
+    MaxSlidingWindowNaive(A, m);
 
     return 0;
 }

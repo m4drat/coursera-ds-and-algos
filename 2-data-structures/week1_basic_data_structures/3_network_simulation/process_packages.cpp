@@ -1,56 +1,87 @@
+#include <cassert>
 #include <iostream>
 #include <queue>
 #include <vector>
 
 struct Request
 {
-    Request(int32_t arrival_time, int32_t process_time)
-        : arrival_time(arrival_time)
-        , process_time(process_time)
+    Request(int32_t arrivalTime, int32_t processTime)
+        : arrivalTime(arrivalTime)
+        , processTime(processTime)
     {}
 
-    int32_t arrival_time;
-    int32_t process_time;
+    int32_t arrivalTime;
+    int32_t processTime;
 };
 
 struct Response
 {
-    Response(bool dropped, int32_t start_time)
+    Response(bool dropped, int32_t startTime)
         : dropped(dropped)
-        , start_time(start_time)
+        , startTime(startTime)
     {}
 
     bool dropped;
-    int32_t start_time;
+    int32_t startTime;
 };
 
 class Buffer
 {
 public:
     Buffer(int32_t size)
-        : size_(size)
-        , finish_time_()
+        : mFinishTime{}
+        , mBufferSize{ size }
     {}
 
+    /**
+     * @brief Simulates packets processing
+     * @param request - request to process
+     * @return Response - result of request processing
+     */
     Response Process(const Request& request)
     {
-        // write your code here
+        // If queue is not empty - pop every packet that is already processed
+        // Which request.arrivalTime > mFinishTime.front()
+        for (int32_t finishTime = mFinishTime.front();
+             finishTime <= request.arrivalTime && !mFinishTime.empty();
+             finishTime = mFinishTime.front()) {
+            mFinishTime.pop();
+        }
+
+        // If we don't have enough space in the buffer - the packet is dropped
+        if (mFinishTime.size() >= mBufferSize)
+            return Response{ true, request.arrivalTime };
+
+        // If mFinishTime is empty - we start to process the packet immediately
+        if (mFinishTime.empty()) {
+            mFinishTime.push(request.arrivalTime + request.processTime);
+            return Response{ false, request.arrivalTime };
+        }
+
+        // Lastly - we have to process current packet right after
+        // we process everything from the buffer
+        auto curPacketProcessingStartTime = mFinishTime.back();
+        mFinishTime.push(curPacketProcessingStartTime + request.processTime);
+        return Response{ false, curPacketProcessingStartTime };
     }
 
 private:
-    int32_t size_;
-    std::queue<int32_t> finish_time_;
+    std::queue<int32_t> mFinishTime;
+    int32_t mBufferSize;
 };
 
 std::vector<Request> ReadRequests()
 {
-    std::vector<Request> requests;
     int32_t count;
     std::cin >> count;
+
+    std::vector<Request> requests;
+    requests.reserve(count);
+
     for (int32_t i = 0; i < count; ++i) {
-        int32_t arrival_time, process_time;
-        std::cin >> arrival_time >> process_time;
-        requests.push_back(Request(arrival_time, process_time));
+        int32_t arrivalTime, processTime;
+        std::cin >> arrivalTime >> processTime;
+        requests.push_back(Request(arrivalTime, processTime));
     }
     return requests;
 }
@@ -58,6 +89,8 @@ std::vector<Request> ReadRequests()
 std::vector<Response> ProcessRequests(const std::vector<Request>& requests, Buffer* buffer)
 {
     std::vector<Response> responses;
+    responses.reserve(requests.size());
+
     for (int32_t i = 0; i < requests.size(); ++i)
         responses.push_back(buffer->Process(requests[i]));
     return responses;
@@ -66,7 +99,7 @@ std::vector<Response> ProcessRequests(const std::vector<Request>& requests, Buff
 void PrintResponses(const std::vector<Response>& responses)
 {
     for (int32_t i = 0; i < responses.size(); ++i)
-        std::cout << (responses[i].dropped ? -1 : responses[i].start_time) << std::endl;
+        std::cout << (responses[i].dropped ? -1 : responses[i].startTime) << std::endl;
 }
 
 int32_t main()

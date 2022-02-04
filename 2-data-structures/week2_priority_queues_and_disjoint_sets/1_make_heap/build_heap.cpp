@@ -2,68 +2,118 @@
 #include <iostream>
 #include <vector>
 
-using std::cin;
-using std::cout;
-using std::make_pair;
-using std::pair;
-using std::swap;
-using std::vector;
-
 class HeapBuilder
 {
 private:
-    vector<int> data_;
-    vector<pair<int, int>> swaps_;
+    std::vector<int32_t> mData;
+    std::vector<std::pair<int32_t, int32_t>> mSwaps;
 
     void WriteResponse() const
     {
-        cout << swaps_.size() << "\n";
-        for (int i = 0; i < swaps_.size(); ++i) {
-            cout << swaps_[i].first << " " << swaps_[i].second << "\n";
+        std::cout << mSwaps.size() << "\n";
+        for (int32_t i = 0; i < mSwaps.size(); ++i) {
+            std::cout << mSwaps[i].first << " " << mSwaps[i].second << "\n";
         }
     }
 
     void ReadData()
     {
-        int n;
-        cin >> n;
-        data_.resize(n);
-        for (int i = 0; i < n; ++i)
-            cin >> data_[i];
+        int32_t n;
+        std::cin >> n;
+        mData.resize(n);
+
+        for (int32_t i = 0; i < n; ++i)
+            std::cin >> mData[i];
     }
 
-    void GenerateSwaps()
+    int32_t GetLeftChild(int32_t nodeIdx)
     {
-        swaps_.clear();
-        // The following naive implementation just sorts
-        // the given sequence using selection sort algorithm
-        // and saves the resulting sequence of swaps.
-        // This turns the given array into a heap,
-        // but in the worst case gives a quadratic number of swaps.
-        //
-        // TODO: replace by a more efficient implementation
-        for (int i = 0; i < data_.size(); ++i)
-            for (int j = i + 1; j < data_.size(); ++j) {
-                if (data_[i] > data_[j]) {
-                    swap(data_[i], data_[j]);
-                    swaps_.push_back(make_pair(i, j));
-                }
+        return 2 * nodeIdx + 1;
+    }
+
+    int32_t GetRightChild(int32_t nodeIdx)
+    {
+        return 2 * nodeIdx + 2;
+    }
+
+    void SiftDownRecursive(int32_t nodeIdx)
+    {
+        uint32_t curMinIndex = nodeIdx;
+
+        int32_t leftChildIdx = GetLeftChild(nodeIdx);
+        if (leftChildIdx < mData.size() && mData[leftChildIdx] < mData[curMinIndex]) {
+            curMinIndex = leftChildIdx;
+        }
+
+        int32_t rightChildIdx = GetRightChild(nodeIdx);
+        if (rightChildIdx < mData.size() && mData[rightChildIdx] < mData[curMinIndex]) {
+            curMinIndex = rightChildIdx;
+        }
+
+        if (nodeIdx != curMinIndex) {
+            mSwaps.push_back(std::make_pair(curMinIndex, nodeIdx));
+            std::swap(mData[curMinIndex], mData[nodeIdx]);
+            SiftDownRecursive(curMinIndex);
+        }
+    }
+
+    void SiftDownIterative(int32_t nodeIdx)
+    {
+        uint32_t curMinIndex = 0;
+
+        // While current node idx is less than heap size - continue
+        while (nodeIdx < mData.size()) {
+            curMinIndex = nodeIdx;
+
+            int32_t leftChildIdx = GetLeftChild(nodeIdx);
+            if (leftChildIdx < mData.size() && mData[leftChildIdx] < mData[curMinIndex]) {
+                curMinIndex = leftChildIdx;
             }
+
+            int32_t rightChildIdx = GetRightChild(nodeIdx);
+            if (rightChildIdx < mData.size() && mData[rightChildIdx] < mData[curMinIndex]) {
+                curMinIndex = rightChildIdx;
+            }
+
+            // If after checks, we can't find any child, whose value is less
+            // than the current node value (nodeIdx) - break
+            if (curMinIndex == nodeIdx) {
+                break;
+            }
+
+            if (nodeIdx != curMinIndex) {
+                mSwaps.push_back(std::make_pair(curMinIndex, nodeIdx));
+                std::swap(mData[curMinIndex], mData[nodeIdx]);
+                nodeIdx = curMinIndex;
+            }
+        }
+    }
+
+    void BuildHeap()
+    {
+        for (int32_t i = mData.size() / 2; i >= 0; i--) {
+            SiftDownIterative(i);
+        }
     }
 
 public:
+    HeapBuilder()
+        : mData{}
+        , mSwaps{}
+    {}
+
     void Solve()
     {
         ReadData();
-        GenerateSwaps();
+        BuildHeap();
         WriteResponse();
     }
 };
 
-int main()
+int32_t main()
 {
     std::ios_base::sync_with_stdio(false);
-    HeapBuilder heap_builder;
+    HeapBuilder heap_builder{};
     heap_builder.Solve();
     return 0;
 }

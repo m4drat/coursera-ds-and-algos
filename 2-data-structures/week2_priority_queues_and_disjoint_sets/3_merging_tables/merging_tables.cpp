@@ -4,18 +4,12 @@
 #include <iostream>
 #include <vector>
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::max;
-using std::vector;
-
 struct DisjointSetsElement
 {
-    int size, parent, rank;
+    int32_t mSize, parent, rank;
 
-    DisjointSetsElement(int size = 0, int parent = -1, int rank = 0)
-        : size(size)
+    DisjointSetsElement(int32_t mSize = 0, int32_t parent = -1, int32_t rank = 0)
+        : mSize(mSize)
         , parent(parent)
         , rank(rank)
     {}
@@ -23,55 +17,55 @@ struct DisjointSetsElement
 
 struct DisjointSets
 {
-    int size;
-    int max_table_size;
-    vector<DisjointSetsElement> sets;
+    int32_t mSize;
+    int32_t mMaxTableSize;
+    std::vector<DisjointSetsElement> mSets;
 
-    DisjointSets(int size)
-        : size(size)
-        , max_table_size(0)
-        , sets(size)
+    DisjointSets(int32_t mSize)
+        : mSize(mSize)
+        , mMaxTableSize(0)
+        , mSets(mSize)
     {
-        for (int i = 0; i < size; i++)
-            sets[i].parent = i;
+        for (int32_t i = 0; i < mSize; i++)
+            mSets[i].parent = i;
     }
 
-    int getParent(int table)
+    int32_t getParent(int32_t table)
     {
         // find parent and compress path
     }
 
-    void merge(int destination, int source)
+    void merge(int32_t destination, int32_t source)
     {
-        int realDestination = getParent(destination);
-        int realSource = getParent(source);
+        int32_t realDestination = getParent(destination);
+        int32_t realSource = getParent(source);
         if (realDestination != realSource) {
             // merge two components
             // use union by rank heuristic
-            // update max_table_size
+            // update mMaxTableSize
         }
     }
 };
 
-int main()
+int32_t main()
 {
-    int n, m;
-    cin >> n >> m;
+    int32_t n, m;
+    std::cin >> n >> m;
 
     DisjointSets tables(n);
-    for (auto& table : tables.sets) {
-        cin >> table.size;
-        tables.max_table_size = max(tables.max_table_size, table.size);
+    for (auto& table : tables.mSets) {
+        std::cin >> table.mSize;
+        tables.mMaxTableSize = std::max(tables.mMaxTableSize, table.mSize);
     }
 
-    for (int i = 0; i < m; i++) {
-        int destination, source;
-        cin >> destination >> source;
+    for (int32_t i = 0; i < m; i++) {
+        int32_t destination, source;
+        std::cin >> destination >> source;
         --destination;
         --source;
 
         tables.merge(destination, source);
-        cout << tables.max_table_size << endl;
+        std::cout << tables.mMaxTableSize << std::endl;
     }
 
     return 0;

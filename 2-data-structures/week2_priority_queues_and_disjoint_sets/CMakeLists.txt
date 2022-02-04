@@ -1,0 +1,3 @@
+add_subdirectory(1_make_heap)
+add_subdirectory(2_job_queue)
+add_subdirectory(3_merging_tables)

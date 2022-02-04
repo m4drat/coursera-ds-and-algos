@@ -163,7 +163,6 @@ private:
         while (!stackA.Empty()) {
             T topValue = stackA.Top();
             stackA.Pop();
-
             stackB.Push(topValue);
         }
     }

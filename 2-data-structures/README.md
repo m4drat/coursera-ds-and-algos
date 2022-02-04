@@ -12,7 +12,10 @@
 
 ## Week 2: Priority queues and disjoint sets
 
-1. make heap ❌
+1. make heap ✔️
+    - [Harvard's lecture on priority queues](https://sites.fas.harvard.edu/~libs111/files/lectures/unit9-3.pdf)
+    - [Min Binary Heap Implementation in C++](https://www.codeproject.com/Tips/816934/Min-Binary-Heap-Implementation-in-Cplusplus)
+    - [https://www.techiedelight.com/min-heap-max-heap-implementation-c/](https://www.techiedelight.com/min-heap-max-heap-implementation-c/)
 2. job queue ❌
 3. merging tables ❌
 

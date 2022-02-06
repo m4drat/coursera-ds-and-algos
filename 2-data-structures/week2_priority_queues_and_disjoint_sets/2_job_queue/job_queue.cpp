@@ -2,10 +2,152 @@
 #include <iostream>
 #include <vector>
 
+class ThreadNode
+{
+private:
+    uint64_t mFinishTime;
+    uint32_t mThreadId;
+
+public:
+    ThreadNode(uint64_t tFinishTime, uint32_t tThreadId)
+        : mFinishTime{ tFinishTime }
+        , mThreadId{ tThreadId }
+    {}
+
+    ThreadNode(uint32_t tThreadId)
+        : mFinishTime{ 0 }
+        , mThreadId{ tThreadId }
+    {}
+
+    bool operator<(const ThreadNode& n2) const
+    {
+        // If time is equal, compare by thread id
+        if (this->mFinishTime == n2.mFinishTime)
+            return this->mThreadId < n2.mThreadId;
+        return this->mFinishTime < n2.mFinishTime;
+    }
+
+    bool operator>(const ThreadNode& n2) const
+    {
+        return n2.operator<(*this);
+    }
+
+    void SetPriority(uint64_t tNewPriority)
+    {
+        mFinishTime = tNewPriority;
+    }
+
+    uint64_t GetPriority()
+    {
+        return mFinishTime;
+    }
+
+    uint32_t GetThreadId()
+    {
+        return mThreadId;
+    }
+};
+
+template<class T>
+class MinHeap
+{
+private:
+    std::vector<T> mData;
+
+    int32_t GetParent(int32_t nodeIdx)
+    {
+        return nodeIdx / 2;
+    }
+
+    int32_t GetLeftChild(int32_t nodeIdx)
+    {
+        return 2 * nodeIdx + 1;
+    }
+
+    int32_t GetRightChild(int32_t nodeIdx)
+    {
+        return 2 * nodeIdx + 2;
+    }
+
+    void SiftDownIterative(int32_t nodeIdx)
+    {
+        uint32_t curMinIndex = 0;
+
+        // While current node idx is less than heap size - continue
+        while (nodeIdx < mData.size()) {
+            curMinIndex = nodeIdx;
+
+            int32_t leftChildIdx = GetLeftChild(nodeIdx);
+            if (leftChildIdx < mData.size() && mData[leftChildIdx] < mData[curMinIndex]) {
+                curMinIndex = leftChildIdx;
+            }
+
+            int32_t rightChildIdx = GetRightChild(nodeIdx);
+            if (rightChildIdx < mData.size() && mData[rightChildIdx] < mData[curMinIndex]) {
+                curMinIndex = rightChildIdx;
+            }
+
+            // If after checks, we can't find any child, whose value is less
+            // than the current node value (nodeIdx) - break
+            if (curMinIndex == nodeIdx) {
+                break;
+            }
+
+            if (nodeIdx != curMinIndex) {
+                std::swap(mData[curMinIndex], mData[nodeIdx]);
+                nodeIdx = curMinIndex;
+            }
+        }
+    }
+
+    void SiftUp(int32_t nodeIdx)
+    {
+        while (nodeIdx > 0 && mData[GetParent(nodeIdx)] < mData[nodeIdx]) {
+            std::swap(mData[GetParent(nodeIdx)], mData[nodeIdx]);
+            nodeIdx = GetParent(nodeIdx);
+        }
+    }
+
+    void BuildHeap()
+    {
+        for (int32_t i = mData.size() / 2; i >= 0; i--) {
+            SiftDownIterative(i);
+        }
+    }
+
+public:
+    MinHeap(std::vector<T>& tData)
+        : mData(tData)
+    {
+        BuildHeap();
+    }
+
+    T GetMin()
+    {
+        return mData.at(0);
+    }
+
+    void ChangePriority(uint32_t tNodeIdx, uint64_t newPriority)
+    {
+        uint64_t oldPriority = mData.at(tNodeIdx).GetPriority();
+        mData.at(tNodeIdx).SetPriority(newPriority);
+
+        if (newPriority < oldPriority) {
+            SiftUp(tNodeIdx);
+            return;
+        }
+
+        SiftDownIterative(tNodeIdx);
+    }
+};
+
 class JobQueue
 {
 private:
-    int32_t mNumWorkers;
+    int32_t mTotalThreads;
+    int32_t mTotalJobs;
+
+    std::vector<ThreadNode> mThreads;
     std::vector<int32_t> mJobs;
 
     std::vector<int32_t> mAssignedWorkers;
@@ -13,36 +155,38 @@ private:
 
     void WriteResponse() const
     {
-        for (int32_t i = 0; i < mJobs.size(); ++i) {
+        for (int32_t i = 0; i < mTotalJobs; ++i) {
             std::cout << mAssignedWorkers[i] << " " << mStartTimes[i] << "\n";
         }
     }
 
     void ReadData()
     {
-        int32_t m;
-        std::cin >> mNumWorkers >> m;
-        mJobs.resize(m);
-        for (int32_t i = 0; i < m; ++i)
+        std::cin >> mTotalThreads >> mTotalJobs;
+
+        mThreads.reserve(mTotalThreads);
+        for (uint32_t threadId = 0; threadId < mTotalThreads; threadId++)
+            mThreads.emplace_back(threadId);
+
+        mJobs.resize(mTotalJobs);
+        for (int32_t i = 0; i < mTotalJobs; ++i)
             std::cin >> mJobs[i];
     }
 
     void AssignJobs()
     {
-        // TODO: replace this code with a faster algorithm.
         mAssignedWorkers.resize(mJobs.size());
         mStartTimes.resize(mJobs.size());
-        std::vector<uint64_t> mNextFreeTime(mNumWorkers, 0);
-        for (int32_t i = 0; i < mJobs.size(); ++i) {
-            int32_t duration = mJobs[i];
-            int32_t next_worker = 0;
-            for (int32_t j = 0; j < mNumWorkers; ++j) {
-                if (mNextFreeTime[j] < mNextFreeTime[next_worker])
-                    next_worker = j;
-            }
-            mAssignedWorkers[i] = next_worker;
-            mStartTimes[i] = mNextFreeTime[next_worker];
-            mNextFreeTime[next_worker] += duration;
+
+        MinHeap<ThreadNode> minHeap{ mThreads };
+
+        for (uint32_t i = 0; i < mJobs.size(); i++) {
+            ThreadNode thread = minHeap.GetMin();
+
+            mAssignedWorkers[i] = thread.GetThreadId();
+            mStartTimes[i] = thread.GetPriority();
+
+            minHeap.ChangePriority(0, mJobs[i] + thread.GetPriority());
         }
     }
 

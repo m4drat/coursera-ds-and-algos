@@ -4,67 +4,94 @@
 #include <iostream>
 #include <vector>
 
-struct DisjointSetsElement
+class Table
 {
-    int32_t mSize, parent, rank;
-
-    DisjointSetsElement(int32_t mSize = 0, int32_t parent = -1, int32_t rank = 0)
-        : mSize(mSize)
-        , parent(parent)
-        , rank(rank)
+public:
+    int32_t mSize, mParent, mRank;
+    Table(int32_t tSize = 0, int32_t tParent = -1, int32_t tRank = 0)
+        : mSize(tSize)
+        , mParent(tParent)
+        , mRank(tRank)
     {}
 };
 
-struct DisjointSets
+class DisjointSets
 {
-    int32_t mSize;
+public:
     int32_t mMaxTableSize;
-    std::vector<DisjointSetsElement> mSets;
+    std::vector<Table> mTables;
 
-    DisjointSets(int32_t mSize)
-        : mSize(mSize)
-        , mMaxTableSize(0)
-        , mSets(mSize)
+    DisjointSets(int32_t tTotalTables)
+        : mMaxTableSize(0)
+        , mTables(tTotalTables)
     {
-        for (int32_t i = 0; i < mSize; i++)
-            mSets[i].parent = i;
+        for (int32_t i = 0; i < tTotalTables; i++)
+            mTables[i].mParent = i;
     }
 
-    int32_t getParent(int32_t table)
+    int32_t GetParent(int32_t tTable)
     {
-        // find parent and compress path
-    }
-
-    void merge(int32_t destination, int32_t source)
-    {
-        int32_t realDestination = getParent(destination);
-        int32_t realSource = getParent(source);
-        if (realDestination != realSource) {
-            // merge two components
-            // use union by rank heuristic
-            // update mMaxTableSize
+        if (tTable == mTables[tTable].mParent) {
+            return tTable;
         }
+
+        mTables[tTable].mParent = GetParent(mTables[tTable].mParent);
+
+        return mTables[tTable].mParent;
+    }
+
+    void Merge(int32_t tDestination, int32_t tSource)
+    {
+        int32_t realDestination = GetParent(tDestination);
+        int32_t realSource = GetParent(tSource);
+
+        // If src == dst -> two tables are already merged
+        // We don't need to update mMaxTableSize
+        if (realDestination == realSource)
+            return;
+
+        // If rank (height) of the real destination is higher,
+        // attach mTables[realDestination] to mTables[realSource]
+        // This implements union-by-rank heuristic, that helps
+        // to keep the tree shallow
+        if (mTables[realDestination].mRank > mTables[realSource].mRank) {
+            mTables[realSource].mParent = realDestination;
+
+            mTables[realDestination].mSize += mTables[realSource].mSize;
+            mTables[realSource].mSize = 0;
+        } else {
+            mTables[realDestination].mParent = realSource;
+
+            mTables[realSource].mSize += mTables[realDestination].mSize;
+            mTables[realDestination].mSize = 0;
+
+            if (mTables[realDestination].mRank == mTables[realSource].mRank) {
+                mTables[realSource].mRank++;
+            }
+        }
+
+        // Update mMaxTableSize
+        mMaxTableSize =
+            std::max(mTables[realDestination].mSize + mTables[realSource].mSize, mMaxTableSize);
     }
 };
 
 int32_t main()
 {
-    int32_t n, m;
-    std::cin >> n >> m;
+    int32_t totalTables, totalMergeRequests;
+    std::cin >> totalTables >> totalMergeRequests;
 
-    DisjointSets tables(n);
-    for (auto& table : tables.mSets) {
+    DisjointSets tables(totalTables);
+    for (auto& table : tables.mTables) {
         std::cin >> table.mSize;
         tables.mMaxTableSize = std::max(tables.mMaxTableSize, table.mSize);
     }
 
-    for (int32_t i = 0; i < m; i++) {
+    for (int32_t i = 0; i < totalMergeRequests; i++) {
         int32_t destination, source;
         std::cin >> destination >> source;
-        --destination;
-        --source;
 
-        tables.merge(destination, source);
+        tables.Merge(destination - 1, source - 1);
         std::cout << tables.mMaxTableSize << std::endl;
     }
 

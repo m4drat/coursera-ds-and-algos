@@ -17,7 +17,7 @@
     - [Min Binary Heap Implementation in C++](https://www.codeproject.com/Tips/816934/Min-Binary-Heap-Implementation-in-Cplusplus)
     - [https://www.techiedelight.com/min-heap-max-heap-implementation-c/](https://www.techiedelight.com/min-heap-max-heap-implementation-c/)
 2. job queue ✔️
-3. merging tables ❌
+3. merging tables ✔️
 
 ## Week 3: Hash tables
 

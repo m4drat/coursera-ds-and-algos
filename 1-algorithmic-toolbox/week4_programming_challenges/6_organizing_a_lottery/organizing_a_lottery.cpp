@@ -13,6 +13,8 @@
 constexpr int32_t c_MaxCoord{ 100'000'000 };
 constexpr int32_t c_MinCoord{ -100'000'000 };
 
+// TODO: implement upper_bound/lower_bound
+
 std::vector<int32_t> CountSegmentsFast(std::vector<int32_t>& starts,
                                        std::vector<int32_t>& ends,
                                        std::vector<int32_t> points)

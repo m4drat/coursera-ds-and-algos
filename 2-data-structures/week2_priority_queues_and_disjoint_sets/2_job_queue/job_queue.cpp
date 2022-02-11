@@ -1,6 +1,13 @@
 #include <algorithm>
+#include <concepts>
 #include <iostream>
 #include <vector>
+
+template<class T>
+concept comparable = requires(T& a, T& b)
+{
+    a < b;
+};
 
 class ThreadNode
 {
@@ -48,7 +55,7 @@ public:
     }
 };
 
-template<class T>
+template<comparable T>
 class MinHeap
 {
 private:

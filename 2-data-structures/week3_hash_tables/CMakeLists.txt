@@ -1,0 +1,6 @@
+add_subdirectory(1_phone_book)
+add_subdirectory(2_hash_chains)
+add_subdirectory(3_hash_substring)
+add_subdirectory(4_substring_equality)
+add_subdirectory(5_longest_common_substring)
+add_subdirectory(6_matching_with_mismatches)

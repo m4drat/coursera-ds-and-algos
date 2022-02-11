@@ -8,7 +8,7 @@ class Table
 {
 public:
     int32_t mSize, mParent, mRank;
-    Table(int32_t tSize = 0, int32_t tParent = -1, int32_t tRank = 0)
+    explicit Table(int32_t tSize = 0, int32_t tParent = -1, int32_t tRank = 0)
         : mSize(tSize)
         , mParent(tParent)
         , mRank(tRank)

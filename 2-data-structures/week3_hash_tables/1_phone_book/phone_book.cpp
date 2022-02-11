@@ -1,77 +1,68 @@
 #include <iostream>
+#include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
-
-using std::cin;
-using std::string;
-using std::vector;
 
 struct Query
 {
-    string type, name;
-    int number;
+    std::string type, name;
+    int32_t number;
 };
 
-vector<Query> read_queries()
+template<class T>
+class DirectAddressingHashMap
 {
-    int n;
-    cin >> n;
-    vector<Query> queries(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> queries[i].type;
-        if (queries[i].type == "add")
-            cin >> queries[i].number >> queries[i].name;
-        else
-            cin >> queries[i].number;
+private:
+    std::vector<T> mElements;
+
+public:
+    DirectAddressingHashMap(uint32_t tTotalEntries)
+        : mElements{}
+    {
+        mElements.resize(tTotalEntries);
     }
-    return queries;
-}
 
-void write_responses(const vector<string>& result)
-{
-    for (size_t i = 0; i < result.size(); ++i)
-        std::cout << result[i] << "\n";
-}
+    T& operator[](std::size_t idx)
+    {
+        return mElements[idx];
+    }
+};
 
-vector<string> process_queries(const vector<Query>& queries)
+void ProcessQueries()
 {
-    vector<string> result;
-    // Keep list of all existing (i.e. not deleted yet) contacts.
-    vector<Query> contacts;
-    for (size_t i = 0; i < queries.size(); ++i)
-        if (queries[i].type == "add") {
-            bool was_founded = false;
-            // if we already have contact with such number,
-            // we should rewrite contact's name
-            for (size_t j = 0; j < contacts.size(); ++j)
-                if (contacts[j].number == queries[i].number) {
-                    contacts[j].name = queries[i].name;
-                    was_founded = true;
-                    break;
-                }
-            // otherwise, just add it
-            if (!was_founded)
-                contacts.push_back(queries[i]);
-        } else if (queries[i].type == "del") {
-            for (size_t j = 0; j < contacts.size(); ++j)
-                if (contacts[j].number == queries[i].number) {
-                    contacts.erase(contacts.begin() + j);
-                    break;
-                }
-        } else {
-            string response = "not found";
-            for (size_t j = 0; j < contacts.size(); ++j)
-                if (contacts[j].number == queries[i].number) {
-                    response = contacts[j].name;
-                    break;
-                }
-            result.push_back(response);
+    int32_t n;
+    std::cin >> n;
+    Query query;
+
+    DirectAddressingHashMap<std::unique_ptr<std::string>> hashMap{ 10'000'000 };
+    std::vector<std::string> results;
+
+    for (int32_t i = 0; i < n; ++i) {
+        std::cin >> query.type;
+        if (query.type == "add") {
+            std::cin >> query.number >> query.name;
+            hashMap[query.number] = std::make_unique<std::string>(query.name);
+        } else if (query.type == "del") {
+            std::cin >> query.number;
+            hashMap[query.number] = nullptr;
+        } else if (query.type == "find") {
+            std::cin >> query.number;
+            if (hashMap[query.number]) {
+                results.emplace_back(*hashMap[query.number]);
+            } else {
+                results.emplace_back("not found");
+            }
         }
-    return result;
+    }
+
+    for (const auto& str : results) {
+        std::cout << str << '\n';
+    }
 }
 
 int main()
 {
-    write_responses(process_queries(read_queries()));
+    ProcessQueries();
     return 0;
 }

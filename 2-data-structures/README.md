@@ -24,8 +24,10 @@
 
 1. phone book ✔️
 2. hash chains ✔️
-3. hash substring ❌
-4. substring equality ❌
+3. hash substring ✔️
+    - [Modular arithmetic intro](http://pi.math.cornell.edu/~morris/135/mod.pdf)
+    - [Modular arithmetic intro](https://brilliant.org/wiki/modular-arithmetic/)
+4. substring equality ✔️
 5. longest common substring ❌
 6. matching with mismatches ❌
 

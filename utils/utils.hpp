@@ -26,20 +26,20 @@ namespace utils {
     }
 
     template<typename T>
-    std::vector<T> GenerateRandomVector(uint32_t length, T low, T high)
+    T GenerateRandomContainer(uint32_t length, uint32_t low, uint32_t high)
     {
-        std::vector<T> vec;
-        vec.resize(length);
+        T data;
+        data.resize(length);
 
         std::random_device rand_dev;
         std::mt19937 generator(rand_dev());
-        std::uniform_int_distribution<T> distr(low, high);
+        std::uniform_int_distribution<uint32_t> distr(low, high);
 
         auto gen = [&distr, &generator]() { return distr(generator); };
 
-        std::generate(std::begin(vec), std::end(vec), gen);
+        std::generate(std::begin(data), std::end(data), gen);
 
-        return vec;
+        return data;
     }
 
     template<typename T>

@@ -28,7 +28,9 @@
     - [Modular arithmetic intro](http://pi.math.cornell.edu/~morris/135/mod.pdf)
     - [Modular arithmetic intro](https://brilliant.org/wiki/modular-arithmetic/)
 4. substring equality ✔️
-5. longest common substring ❌
+5. longest common substring ✔️
+    - [DP solution](https://www.techiedelight.com/longest-common-substring-problem/)
+    - [Recursive approach](https://www.interviewbit.com/blog/longest-common-substring/)
 6. matching with mismatches ❌
 
 Links:

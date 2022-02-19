@@ -177,8 +177,8 @@ bool CheckSolution()
 
     for (auto n : { 100, 101, 128, 256, 257, 263, 1023, 1024, 12534, 28900, 35201, 43720, 50000 }) {
         auto randomSegments = std::move(GenerateRandomSegments(n));
-        auto randomPoints =
-            std::move(utils::GenerateRandomVector<int32_t>(n, c_MinCoord, c_MaxCoord));
+        auto randomPoints = std::move(
+            utils::GenerateRandomContainer<std::vector<int32_t>>(n, c_MinCoord, c_MaxCoord));
         auto correctAnswer =
             CountSegmentsSlow(randomSegments.first, randomSegments.second, randomPoints);
         auto myAlgoAns =

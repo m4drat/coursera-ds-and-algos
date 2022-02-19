@@ -226,7 +226,7 @@ bool CheckSolution()
     // Partition3 - works fast enough until n <= 100
     // Partition3SolveRecursive is much, muuuch slower
     for (uint32_t n = 1; n <= 25; n++) {
-        auto input = utils::GenerateRandomVector<int32_t>(n, 1, 30);
+        auto input = utils::GenerateRandomContainer<std::vector<int32_t>>(n, 1, 30);
         auto myAlgoAns = Partition3(input);
         auto recursiveAnswer = Partition3SolveRecursive(input);
 

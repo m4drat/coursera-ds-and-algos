@@ -10,8 +10,7 @@
 constexpr int32_t NO_ELEMENTS_FOUND{ -1 };
 
 /**
- * @brief Binary search implementation. Default version will return
- * a random index in a data set for a key that occurs more than once.
+ * @brief Binary search implementation. Returns the leftmost index if the element is found.
  *
  * @param array
  * @param elementToFind

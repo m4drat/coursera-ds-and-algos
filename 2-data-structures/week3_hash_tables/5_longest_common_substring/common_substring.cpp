@@ -151,7 +151,7 @@ private:
         tHashes[tSubstrLen - 1] = std::unordered_map<HashPair, uint32_t, HashPair::Hash>();
         tHashes[tSubstrLen - 1][hp2] = 0;
 
-        // For each substring of length substrLen
+        // Precalculate hashes for all substrings of length tSubstrLen
         HashPair tmpHp = hp1;
         for (auto i = 1; i <= s.size() - tSubstrLen; ++i) {
             tmpHp = HashPair(
@@ -174,7 +174,7 @@ private:
             sHashes[tSubstrLen - 1][tmpHp] = i;
         }
 
-        // For each substring of length substrLen
+        // Precalculate hashes for all substrings of length tSubstrLen
         tmpHp = hp2;
         for (auto i = 1; i <= t.size() - tSubstrLen; ++i) {
             tmpHp = HashPair(
@@ -200,18 +200,15 @@ private:
 
     Answer CheckSubstring(uint32_t index)
     {
-        Answer ans{ 0, 0, 0 };
-
         PrecomputeHashes(index + 1);
 
         for (auto const& [key, val] : sHashes[index]) {
             if (tHashes[index].find(key) != tHashes[index].end()) {
-                ans = Answer(val, tHashes[index][key], index + 1);
-                break;
+                return Answer(val, tHashes[index][key], index + 1);
             }
         }
 
-        return ans;
+        return Answer(0, 0, 0);
     }
 
 public:

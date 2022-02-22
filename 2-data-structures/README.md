@@ -31,7 +31,7 @@
 5. longest common substring ✔️
     - [DP solution](https://www.techiedelight.com/longest-common-substring-problem/)
     - [Recursive approach](https://www.interviewbit.com/blog/longest-common-substring/)
-6. matching with mismatches ❌
+6. matching with mismatches ✔️
 
 Links:
 

@@ -1,0 +1,5 @@
+add_subdirectory(1_tree_traversals)
+add_subdirectory(2_is_bst)
+add_subdirectory(3_is_bst_advanced)
+add_subdirectory(4_set_range_sum)
+add_subdirectory(5_rope)

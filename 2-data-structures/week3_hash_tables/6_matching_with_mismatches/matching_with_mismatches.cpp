@@ -22,7 +22,7 @@ private:
     static const int64_t cMultiplier1 = 81985361;
     static const int64_t cMultiplier2 = 33717632;
 
-    static const int32_t NO_MISMATCHES = std::numeric_limits<int32_t>::max();
+    static const int32_t cNoMismatches = std::numeric_limits<int32_t>::max();
 
     template<typename T>
     inline T Mod(T a, T b)
@@ -103,7 +103,6 @@ private:
         int64_t textSubstrHash = Mod(mTextSubstrHashes.at(start + len) -
                                          (Mod(mul1mod * mTextSubstrHashes.at(start), mod)),
                                      mod);
-
         return textSubstrHash;
     }
 
@@ -116,7 +115,6 @@ private:
         int64_t patternSubstrHash = Mod(mPatternSubstrHashes.at(start + len) -
                                             (Mod(mul2mod * mPatternSubstrHashes.at(start), mod)),
                                         mod);
-
         return patternSubstrHash;
     }
 
@@ -137,7 +135,7 @@ public:
     int32_t FindFirstMismatchInRange(int32_t base, int32_t start, int32_t len)
     {
         if (len == 1) {
-            return (mText.at(base + start) != mPattern.at(start)) ? start : NO_MISMATCHES;
+            return (mText.at(base + start) != mPattern.at(start)) ? start : cNoMismatches;
         }
 
         if (len % 2 != 0) {
@@ -160,7 +158,7 @@ public:
             return FindFirstMismatchInRange(base, start + len, len);
         }
 
-        return NO_MISMATCHES;
+        return cNoMismatches;
     }
 
     uint32_t CountMismatches(int32_t start,
@@ -176,7 +174,7 @@ public:
 
             nextMismatchPos =
                 FindFirstMismatchInRange(start, nextMismatchPos, mPattern.size() - nextMismatchPos);
-            if (nextMismatchPos == NO_MISMATCHES) {
+            if (nextMismatchPos == cNoMismatches) {
                 break;
             } else {
                 totalMismatches++;

@@ -41,8 +41,18 @@ Links:
 
 ## Week 4: Binary search trees
 
-1. tree traversals ❌
+1. tree traversals ✔️
 2. is bst ❌
 3. is bst advanced ❌
 4. set range sum ❌
 5. rope ❌
+
+Links:
+
+1. [RB trees](https://www.cs.auckland.ac.nz/software/AlgAnim/red_black.html)
+2. [More about RB trees](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree)
+3. [AVL trees](https://www.javatpoint.com/avl-tree)
+4. [More about AVL trees](https://www.programiz.com/dsa/avl-tree)
+5. [Even more information about AVL trees](https://www.tutorialspoint.com/data_structures_algorithms/avl_tree_algorithm.htm)
+6. [Self-Adjusting Binary Search Trees](https://www.cs.cmu.edu/~sleator/papers/self-adjusting.pdf)
+7. [Difference between AVL trees and splay trees](https://stackoverflow.com/questions/7467079/difference-between-avl-trees-and-splay-trees)

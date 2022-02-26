@@ -1,6 +1,9 @@
 #include <algorithm>
 #include <iostream>
+#include <limits>
 #include <vector>
+
+const int32_t cNullElem = -1;
 
 struct Node
 {
@@ -20,10 +23,28 @@ struct Node
     {}
 };
 
-bool IsBinarySearchTree(const std::vector<Node>& tree)
+bool InOrderImpl(const std::vector<Node>& tTree, int32_t tRootIdx, int32_t& tPrevIdx)
 {
-    // Implement correct algorithm here
-    return true;
+    if (tRootIdx == cNullElem)
+        return true;
+
+    if (!InOrderImpl(tTree, tTree[tRootIdx].left, tPrevIdx))
+        return false;
+
+    if (tPrevIdx != cNullElem && tTree[tRootIdx].key <= tTree[tPrevIdx].key)
+        return false;
+
+    tPrevIdx = tRootIdx;
+    return InOrderImpl(tTree, tTree[tRootIdx].right, tPrevIdx);
+}
+
+bool IsBinarySearchTree(const std::vector<Node>& tTree)
+{
+    if (tTree.empty())
+        return true;
+
+    int32_t tPrevIdx = cNullElem;
+    return InOrderImpl(tTree, 0, tPrevIdx);
 }
 
 int32_t main()
@@ -31,6 +52,8 @@ int32_t main()
     int32_t nodes;
     std::cin >> nodes;
     std::vector<Node> tree;
+    tree.reserve(nodes);
+
     for (int32_t i = 0; i < nodes; ++i) {
         int32_t key, left, right;
         std::cin >> key >> left >> right;

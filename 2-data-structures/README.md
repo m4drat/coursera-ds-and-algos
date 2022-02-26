@@ -42,8 +42,9 @@ Links:
 ## Week 4: Binary search trees
 
 1. tree traversals ✔️
-2. is bst ❌
-3. is bst advanced ❌
+2. is bst ✔️
+    - [Different alternative solutions](https://leetcode.com/problems/validate-binary-search-tree/solution/)
+3. is bst advanced ✔️
 4. set range sum ❌
 5. rope ❌
 

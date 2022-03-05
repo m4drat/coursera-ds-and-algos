@@ -1,5 +1,9 @@
 # 3. Algorithms on strings
 
+<p align="center">
+<img src="../assets/algorithms-on-strings.png" style="width:22%">
+</p>
+
 ## Week 1: Suffix Trees
 
 1. Construct a Trie from a Collection of Patterns ❌

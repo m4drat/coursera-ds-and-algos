@@ -1,5 +1,9 @@
 # 4. Algorithms on graphs
 
+<p align="center">
+<img src="../assets/algorithms-on-graphs.png" style="width:30%">
+</p>
+
 ## Week 1: Graph decomposition - 1
 
 1. Finding exit from maze ❌

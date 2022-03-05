@@ -1,5 +1,9 @@
 # 5. Advanced algorithms and complexity
 
+<p align="center">
+<img src="../assets/advanced-algos.png" style="width:25%">
+</p>
+
 ## Week 1: Flows in Networks
 
 1. Evacuating People ❌

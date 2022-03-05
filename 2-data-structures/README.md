@@ -1,5 +1,9 @@
 # 2. Data structures
 
+<p align="center">
+<img src="../assets/data-structures.png" style="width:30%">
+</p>
+
 ## Week 1: Basic data structures
 
 1. brackets in code ✔️

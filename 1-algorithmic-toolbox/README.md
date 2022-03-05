@@ -1,5 +1,9 @@
 # 1. Algorithmic toolbox
 
+<p align="center">
+<img src="../assets/algorithmic-toolbox.png" style="width:30%">
+</p>
+
 Almost every solution for a problem (starting from week-3) has a function called `CheckSolution` which will check if the solution is correct using predefined testcase and/or obviously correct implementation.
 
 ## Week 1

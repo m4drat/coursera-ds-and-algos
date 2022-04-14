@@ -8,7 +8,7 @@ int64_t MaxDotProduct(std::vector<int32_t>& profitPerClick, std::vector<int32_t>
     int64_t result = 0;
 
     for (uint32_t i = 0; i < profitPerClick.size(); ++i) {
-        result += profitPerClick[i] * numberOfClicks[i];
+        result += static_cast<int64_t>(profitPerClick[i]) * static_cast<int64_t>(numberOfClicks[i]);
     }
 
     return result;

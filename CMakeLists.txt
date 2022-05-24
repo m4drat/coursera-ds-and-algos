@@ -10,6 +10,6 @@ include_directories("utils/")
 
 # add_subdirectory("1-algorithmic-toolbox")
 add_subdirectory("2-data-structures")
-# add_subdirectory("3-algorithms-on-strings")
-# add_subdirectory("4-algorithms-on-graphs")
+# add_subdirectory("3-algorithms-on-graphs")
+# add_subdirectory("4-algorithms-on-strings")
 # add_subdirectory("5-advanced-algorithms-and-complexity")

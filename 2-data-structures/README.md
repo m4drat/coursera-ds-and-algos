@@ -61,3 +61,4 @@ Links:
 5. [Even more information about AVL trees](https://www.tutorialspoint.com/data_structures_algorithms/avl_tree_algorithm.htm)
 6. [Self-Adjusting Binary Search Trees](https://www.cs.cmu.edu/~sleator/papers/self-adjusting.pdf)
 7. [Difference between AVL trees and splay trees](https://stackoverflow.com/questions/7467079/difference-between-avl-trees-and-splay-trees)
+8. [AVL Trees: Rotations, Insertion, Deletion with C++ Example](https://www.guru99.com/avl-tree.html)

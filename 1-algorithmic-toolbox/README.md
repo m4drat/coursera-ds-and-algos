@@ -27,7 +27,7 @@ Almost every solution for a problem (starting from week-3) has a function called
 1. Money change ✔️
 2. maximum value of the loot ✔️
 3. Car fueling ✔️
-4. Maximum advertisement revenue ✔️/❌ - ❓ (for some reason, Coursera says that my solution is incorrect)
+4. Maximum advertisement revenue ✔️
 5. Collecting signatures ✔️
 6. Maximum number of prizes ✔️
 7. Maximum salary ✔️

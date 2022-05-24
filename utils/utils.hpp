@@ -51,6 +51,13 @@ namespace utils {
             // Convert all but the last element to avoid a trailing ","
             std::copy(vec.begin(), vec.end() - 1, std::ostream_iterator<T>(oss, ", "));
 
+            // Also can be implemented using std::accumulate
+            // std::string s = std::accumulate(
+            //     std::next(vec.begin()),
+            //     vec.end(),
+            //     std::to_string(vec[0]), // start with first element
+            //     [](std::string a, T b) { return std::move(a) + ", " + std::to_string(b); });
+
             // Now add the last element with no delimiter
             oss << vec.back();
         }
